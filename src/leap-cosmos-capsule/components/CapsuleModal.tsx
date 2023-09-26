@@ -1,4 +1,5 @@
 
+import Capsule from '@usecapsule/web-sdk'
 import { CapsuleModal } from '@usecapsule/web-sdk/dist/modal/CapsuleModal'
 import React, { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
@@ -6,7 +7,7 @@ import { useRecoilState } from 'recoil'
 import { showCapsuleModelState } from '../atoms'
 import { newTheme } from './theme'
 
-export default function CapsuleModalView({capsule}:{capsule: unknown}) {
+export default function CapsuleModalView({capsule}:{capsule: Capsule}) {
   const [showCapsuleModal, setShowCapsuleModal] = useRecoilState(showCapsuleModelState)
 
   useEffect(()=>{

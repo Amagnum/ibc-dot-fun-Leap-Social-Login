@@ -25,7 +25,7 @@ export class CosmosCapsuleWallet extends MainWalletBase {
               "https://capsule.leapwallet.io/",
           }
         );
-        this.capsuleClient = instance;
+        this.capsuleClient = instance; 
       });
       console.log(this.capsuleClient);
       if (!this.capsuleClient) return;
