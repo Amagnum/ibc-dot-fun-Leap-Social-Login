@@ -1,6 +1,21 @@
 import "../styles/globals.css";
 import "@interchain-ui/react/styles";
 
+
+console.log(global, global.self);
+
+if (typeof global.self === "undefined") {
+  (global as any).self = global;
+}
+
+if (typeof global.addEventListener === "undefined") {
+  global.addEventListener = () => { };
+  global.removeEventListener = () => { };
+}
+
+
+console.log(global, global.self);
+
 import { wallets as cosmostationWallets } from "@cosmos-kit/cosmostation-extension";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr-extension";
 import { wallets as leapWallets } from "@cosmos-kit/leap-extension";
@@ -11,7 +26,9 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/react";
 import { assets, chains } from "chain-registry";
 import { AppProps } from "next/app";
+import dynamic from "next/dynamic";
 import Head from "next/head";
+import { useEffect, useState } from "react";
 
 import MainLayout from "@/components/MainLayout";
 import { AssetsProvider } from "@/context/assets";
@@ -19,6 +36,10 @@ import { ChainsProvider } from "@/context/chains";
 import { ToastProvider } from "@/context/toast";
 import { SkipProvider } from "@/solve";
 import { queryClient } from "@/utils/query";
+import CapsuleModalView from "@/leap-cosmos-capsule/components/CapsuleModal";
+import { RecoilRoot, useRecoilState } from "recoil";
+import { capsuleState } from "@/leap-cosmos-capsule/atoms";
+
 
 export default function App({ Component, pageProps }: AppProps) {
   chains.push({
@@ -164,12 +185,60 @@ export default function App({ Component, pageProps }: AppProps) {
     ],
   });
 
-  const wallets = [
+  const [cosmosCapsuleWallet, setCosmosCapsuleWallet] = useState<unknown>()
+  const [capsule, setCapsule] = useState()
+  
+
+  useEffect(()=>{
+    const fn = async () =>{
+      if(!cosmosCapsuleWallet)
+      {
+        const WalletClass = await import('@/leap-cosmos-capsule/main-wallet').then(m=>m.CosmosCapsuleWallet);
+        const WalletInfo = await import('@/leap-cosmos-capsule/registry').then(m=>m.LeapCapsuleInfo);
+        const cosmosCapsuleWallet = new WalletClass(WalletInfo)
+
+        const _capsule = await import("@usecapsule/web-sdk").then((CapsuleModule) => {
+          const Capsule = CapsuleModule.default;
+          CapsuleModule.Environment;
+          const instance = new Capsule(
+            CapsuleModule.Environment.BETA,
+            undefined,
+            {
+              offloadMPCComputationURL:
+                "https://capsule.leapwallet.io/",
+            }
+          );
+          return instance;
+          }
+        )
+
+        setCapsule(_capsule);
+        setCosmosCapsuleWallet(cosmosCapsuleWallet)
+        
+      }
+    }
+
+    fn()
+  })
+
+  let wallets = [
     ...keplrWallets,
     ...cosmostationWallets,
     ...leapWallets,
-    ...metamaskWallets,
+    ...metamaskWallets
   ];
+
+  console.log(cosmosCapsuleWallet);
+
+  if(cosmosCapsuleWallet){
+    wallets = [
+      ...keplrWallets,
+      ...cosmostationWallets,
+      ...leapWallets,
+      ...metamaskWallets, 
+      cosmosCapsuleWallet
+    ];
+  }
 
   return (
     <>
@@ -184,7 +253,8 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <main>
         <QueryClientProvider client={queryClient}>
-          <ChainProvider
+          <RecoilRoot >
+          {!!cosmosCapsuleWallet && <ChainProvider
             chains={chains}
             assetLists={assets}
             wallets={wallets}
@@ -199,13 +269,15 @@ export default function App({ Component, pageProps }: AppProps) {
                       <MainLayout>
                         <Component {...pageProps} />
                       </MainLayout>
+                      <CapsuleModalView capsule={capsule}/>
                     </ToastProvider>
                     <RadixToast.Viewport className="w-[390px] max-w-[100vw] flex flex-col gap-2 p-6 fixed bottom-0 right-0 z-[999999]" />
                   </RadixToast.ToastProvider>
                 </AssetsProvider>
               </ChainsProvider>
             </SkipProvider>
-          </ChainProvider>
+          </ChainProvider>}
+          </RecoilRoot>
         </QueryClientProvider>
       </main>
       <Analytics />

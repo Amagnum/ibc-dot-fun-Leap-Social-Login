@@ -6,6 +6,8 @@ import { DialogContent } from "@/elements/Dialog";
 import { getChainByID } from "@/utils/utils";
 
 import { useWalletModal } from "./context";
+import { useRecoilState } from "recoil";
+import { showCapsuleModelState } from "@/leap-cosmos-capsule/atoms";
 
 export interface MinimalWallet {
   walletName: string;
@@ -24,8 +26,10 @@ interface Props {
 }
 
 export const WalletModal: FC<Props> = ({ onClose, wallets }) => {
+  const [getter, setter] = useRecoilState(showCapsuleModelState)
   async function onWalletConnect(wallet: MinimalWallet) {
     await wallet.connect();
+    setter(true);
     onClose();
   }
 

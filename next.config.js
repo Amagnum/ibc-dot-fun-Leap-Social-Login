@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 
+const withTM = require('next-transpile-modules')(['@usecapsule/web-sdk', '@usecapsule/user-management-client']);
+
 const nextConfig = {
   productionBrowserSourceMaps: true,
   rewrites: async () => {
@@ -25,4 +27,5 @@ const nextConfig = {
       : [],
 };
 
-module.exports = nextConfig;
+
+module.exports = withTM(nextConfig);
