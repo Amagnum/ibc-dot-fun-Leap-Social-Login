@@ -1,3 +1,4 @@
+import Capsule from "@usecapsule/web-sdk";
 import { atom } from "recoil";
 
 export const showCapsuleModelState = atom<boolean>({
@@ -5,7 +6,7 @@ export const showCapsuleModelState = atom<boolean>({
   default: false,
 });
 
-export const capsuleState = atom<unknown>({
+export const capsuleState = atom<Capsule>({
 key: "capsule-state",
 default: undefined
 })
