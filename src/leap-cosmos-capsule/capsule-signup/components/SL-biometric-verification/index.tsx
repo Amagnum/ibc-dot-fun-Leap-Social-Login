@@ -1,6 +1,4 @@
-import 'react-loading-skeleton/dist/skeleton.css'
-
-import { upload } from '@usecapsule/web-sdk/dist/transmission/transmissionUtils'
+import {QrCode} from '@leapwallet/leap-ui'
 import React, { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
@@ -8,7 +6,7 @@ import { capsuleState } from '@/leap-cosmos-capsule/atoms'
 
 import { ModalStep } from '../../constant'
 import { LoaderAnimation } from '../loader/Loader'
-import QrCode from '../qr-code'
+
 
 export default function SLBiometricVerification({
   currentStep,
@@ -32,6 +30,7 @@ export default function SLBiometricVerification({
       setShortLoginLink('')
     }
     async function shortenUrl() {
+      const upload = await import("@usecapsule/web-sdk/dist/transmission/transmissionUtils").then(m=>m.upload);
       const url = await upload(hotLink, capsule)
       // @ts-ignore
       setShortLoginLink(capsule.getShortUrl(url))

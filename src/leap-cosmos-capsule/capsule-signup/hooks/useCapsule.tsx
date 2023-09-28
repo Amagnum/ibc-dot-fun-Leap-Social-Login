@@ -1,7 +1,5 @@
 /* eslint-disable no-unused-vars */
-import 'react-loading-skeleton/dist/skeleton.css'
 
-import { Wallet } from '@usecapsule/web-sdk/dist/Capsule'
 import { useEffect, useRef, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
@@ -15,11 +13,11 @@ export default function useCapsule() {
   const [showCapsuleModal, setShowCapsuleModal] = useRecoilState(showCapsuleModelState)
   const [capsule, setCapsule] = useRecoilState(capsuleState);
 
-  const [emailInput, setEmailInput] = useState(capsule.getEmail() ?? '')
+  const [emailInput, setEmailInput] = useState(capsule?.getEmail() ?? '')
   const [otpInput, setOtpInput] = useState('')
   const [error, setError] = useState('')
 
-  const [createWalletRes, setCreateWalletRes] = useState<[Wallet, string | null]>()
+  const [createWalletRes, setCreateWalletRes] = useState<[unknown, string | null]>()
   const [recoveryShare, setRecoveryShare] = useState<string>()
 
   // Current Step
@@ -70,10 +68,10 @@ export default function useCapsule() {
     if (!emailInput) {
       throw new Error('email is required')
     }
-    capsule.clearStorage(true)
+    capsule?.clearStorage(true)
 
     try {
-      const userExists = await capsule.checkIfUserExists(emailInput)
+      const userExists = await capsule?.checkIfUserExists(emailInput)
       if (userExists) {
         const webAuthUrlForLogin = await capsule.initiateUserLogin(emailInput)
         setCurrentStep(ModalStep.BIOMETRIC_LOGIN)
@@ -122,7 +120,7 @@ export default function useCapsule() {
   useEffect(() => {
     // TODO probably we should invalidate it after using...
     async function genPaillierKey() {
-      await capsule.generatePaillierKey()
+      await capsule?.generatePaillierKey()
       setPaillierGenDone(true)
       setPercentKeygenDone(25)
     }

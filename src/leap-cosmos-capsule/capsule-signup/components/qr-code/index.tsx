@@ -7,13 +7,28 @@ import QRCodeStyling, {
   Mode,
   Options,
   TypeNumber,
-} from 'qr-code-styling';
-import React, { ReactElement,useEffect, useRef, useState } from 'react';
+} from "qr-code-styling";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 
-import { Images } from '../../images';
+import { Images } from "../../images";
 
 
-export type QrCodeProps = { data: string; height: number; width: number } & Options;
+const useQRCodeStyling = (options: Options): QRCodeStyling | null => {
+  //Only do this on the client
+  if (typeof window !== 'undefined') {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const QRCodeStylingLib = require('qr-code-styling')
+    const qrCodeStyling: QRCodeStyling = new QRCodeStylingLib(options)
+    return qrCodeStyling
+  }
+  return null
+}
+
+export type QrCodeProps = {
+  data: string;
+  height: number;
+  width: number;
+} & Options;
 
 function QrCode(QrCodeProps: QrCodeProps): ReactElement {
   const options = {
@@ -21,11 +36,11 @@ function QrCode(QrCodeProps: QrCodeProps): ReactElement {
     height: QrCodeProps.height,
     image: Images.Misc.LeapQrIcon,
     margin: 8,
-    type: 'svg' as DrawType,
+    type: "svg" as DrawType,
     qrOptions: {
       typeNumber: 0 as TypeNumber,
-      mode: 'Byte' as Mode,
-      errorCorrectionLevel: 'Q' as ErrorCorrectionLevel,
+      mode: "Byte" as Mode,
+      errorCorrectionLevel: "Q" as ErrorCorrectionLevel,
     },
     imageOptions: {
       hideBackgroundDots: true,
@@ -33,40 +48,65 @@ function QrCode(QrCodeProps: QrCodeProps): ReactElement {
       margin: 10,
     },
     dotsOptions: {
-      color: '#000',
-      type: 'dots' as DotType,
+      color: "#000",
+      type: "dots" as DotType,
     },
     backgroundOptions: {
-      color: '#FFF',
+      color: "#FFF",
     },
     cornersSquareOptions: {
-      color: '#000',
-      type: 'dot' as CornerSquareType,
+      color: "#000",
+      type: "dot" as CornerSquareType,
     },
     cornersDotOptions: {
-      color: '#000',
-      type: 'dot' as CornerDotType,
+      color: "#000",
+      type: "dot" as CornerDotType,
     },
     ...(QrCodeProps as Options),
   } as Options;
 
-  const [qrCode] = useState<QRCodeStyling>(new QRCodeStyling(options));
+  const qrCode = useQRCodeStyling(options)
+  // const [qrCode, setQrCode] = useState<QRCodeStyling>();
+
+  // useEffect(() => {
+  //   const fn = async () => {
+  //     if (qrCode) return;
+  //     const finalC = await import("qr-code-styling").then((m) => {
+  //       const QRCodeStyling = m.default;
+  //       return new QRCodeStyling(options);
+  //     });
+  //     console.log("finalC", finalC);
+  //     setQrCode(finalC);
+  //   };
+  //   fn();
+  // });
+
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (ref.current) {
-      qrCode.append(ref.current);
+      qrCode?.append(ref.current);
     }
   }, [qrCode, ref]);
 
+  useEffect(() => {
+    qrCode?.update({ data: QrCodeProps.data })
+  }, [QrCodeProps, qrCode])
+
+  console.log('qrCode', qrCode)
+
   return (
-    <div
-      ref={ref}
-      style={{
-        height: QrCodeProps.height,
-        width: QrCodeProps.width,
-      }}
-    />
+    <>
+      {qrCode && (
+        <div
+          ref={ref}
+          style={{
+            height: QrCodeProps.height,
+            width: QrCodeProps.width,
+          }}
+        />
+      )}
+    </>
   );
 }
 

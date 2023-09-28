@@ -1,4 +1,3 @@
-import 'react-loading-skeleton/dist/skeleton.css'
 
 import classNames from 'classnames'
 import React from 'react'
@@ -32,13 +31,13 @@ export default function SLEmailVerification({
   return (
     <>
       <div className='mb-6 mt-6 flex w-full flex-col items-start justify-center px-6'>
-        <div className='mb-3 text-md font-bold text-black-100 dark:text-white-100'>Your email</div>
-        <div className='flex w-full flex-row items-center justify-start gap-1 rounded-full bg-gray-100 px-4 py-3 dark:bg-gray-900'>
+        <div className='mb-3 text-md font-bold text-white'>Your email</div>
+        <div className='flex w-full flex-row items-center justify-start gap-1 rounded-full bg-gray-900'>
           <input
             value={emailInput}
             placeholder='Enter your email'
             onChange={(e) => setEmailInput(e.target.value)}
-            className='w-[calc(100%-28px)] bg-gray-100 text-md font-bold text-black-100 outline-none placeholder:font-medium dark:bg-gray-900 dark:text-white-100 placeholder:dark:text-gray-500'
+            className='w-[calc(100%-28px)]  text-md font-bold text-black-100 outline-none placeholder:font-medium bg-gray-900 dark:text-white-100 placeholder:dark:text-gray-500'
           />
         </div>
       </div>
@@ -48,20 +47,20 @@ export default function SLEmailVerification({
           <div className='mb-3 text-md font-bold text-black-100 dark:text-white-100'>
             Verification code
           </div>
-          <div className='flex w-full flex-row items-center justify-start gap-1 rounded-full bg-gray-100 px-4 py-3 dark:bg-gray-900'>
+          <div className='flex w-full flex-row items-center justify-start gap-1 rounded-full  px-4 py-3 bg-gray-900'>
             <input
               value={otpInput}
               placeholder='_ _ _ _ _ _'
               type='password'
               onChange={(e) => setOtpInput(e.target.value)}
-              className='w-[calc(100%-28px)] bg-gray-100 text-md  font-bold text-black-100 outline-none placeholder:font-medium dark:bg-gray-900 dark:text-white-100 placeholder:dark:text-gray-500'
+              className='w-[calc(100%-28px)]  text-md  font-bold text-black-100 outline-none placeholder:font-medium bg-gray-900 dark:text-white-100 placeholder:dark:text-gray-500'
             />
           </div>
           <button
             disabled={isResendButtonDisabled}
             onClick={resendCode}
             className={classNames(
-              'm-2 mb-3 flex w-full justify-end text-right text-sm text-black-100 dark:text-white-100',
+              'm-2 mb-3 flex w-full justify-end text-right text-sm text-white',
               { 'opacity-30': isResendButtonDisabled },
             )}
           >

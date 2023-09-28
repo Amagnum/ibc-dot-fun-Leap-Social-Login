@@ -1,23 +1,19 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 
 import {
   ChakraProvider,
   extendTheme,
-  HStack,
   Modal,
   ModalBody,
   ModalContent,
-  ModalHeader,
   ModalOverlay,
   VStack,
 } from "@chakra-ui/react";
-import { useWalletClient } from "@cosmos-kit/react";
 import Capsule from "@usecapsule/web-sdk";
 import classNames from "classnames";
-import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import React, { useEffect } from "react";
 
-import { showCapsuleModelState } from "../atoms";
 import SLAccountCreationDone from "./components/SL-account-creation-done";
 import SLBiometricVerification from "./components/SL-biometric-verification";
 import SLCreatingNewWallet from "./components/SL-creating-new-wallet";
@@ -26,45 +22,19 @@ import SLHeader from "./components/SL-header";
 import { ModalStep } from "./constant";
 import useCapsule from "./hooks/useCapsule";
 
+export type CapsuleModalProps = {
+  capsule: Capsule;
+  showCapsuleModal: boolean;
+  setShowCapsuleModal: (v: boolean) => void;
+  onAfterLoginSuccessful: () => void;
+};
+
 export default function CustomCapsuleModalView({
   capsule,
-}: {
-  capsule: Capsule;
-}) {
-  const [showCapsuleModal, setShowCapsuleModal] = useRecoilState(
-    showCapsuleModelState,
-  );
-  const [CustomCapsuleModalView2, setCustomCapsuleModalView2] =
-    useState<unknown>();
-
-  useEffect(() => {
-    const fn = async () => {
-      const _Component = await import("@leapwallet/leap-ui/dist/components/capsule-signup").then((m) => m.default);
-      setCustomCapsuleModalView2(_Component);
-    };
-    fn();
-  });
-
-  return (
-    <>
-      {!!CustomCapsuleModalView2 && (
-        <CustomCapsuleModalView2
-          capsule={capsule}
-          showCapsuleModal={showCapsuleModal}
-          setShowCapsuleModal={setShowCapsuleModal}
-        />
-      )}
-    </>
-  );
-}
-
-export function CustomCapsuleModalViewXX({ capsule }: { capsule: Capsule }) {
-  const [showCapsuleModal, setShowCapsuleModal] = useRecoilState(
-    showCapsuleModelState,
-  );
-
-  const { client: walletClient } = useWalletClient();
-
+  showCapsuleModal,
+  setShowCapsuleModal,
+  onAfterLoginSuccessful,
+}: CapsuleModalProps) {
   const {
     setCurrentStep,
     emailInput,
@@ -85,7 +55,7 @@ export function CustomCapsuleModalViewXX({ capsule }: { capsule: Capsule }) {
     percentKeygenDone,
 
     recoveryShare,
-  } = useCapsule();
+  } = useCapsule(capsule, showCapsuleModal);
 
   const disableContinue = false;
 
@@ -93,19 +63,27 @@ export function CustomCapsuleModalViewXX({ capsule }: { capsule: Capsule }) {
 
   // initialize wallet in leap repo
   useEffect(() => {
-    console.log(currentStep, capsule, walletClient);
+    console.log(currentStep, capsule);
     if (currentStep === ModalStep.LOGIN_DONE) {
       const fn = async () => {
         if (await capsule.isSessionActive()) {
-          if (Object.values(capsule.getWallets()).length > 0 && walletClient) {
+          if (Object.values(capsule.getWallets()).length > 0) {
             setShowCapsuleModal(false);
+            onAfterLoginSuccessful();
           }
         }
       };
       fn();
+
+      if (typeof window !== "undefined") {
+        const d = document.documentElement;
+        d.classList.remove(...["dark", "light"]);
+        d.classList.add("dark");
+      }
     }
   }, [currentStep]);
 
+  // console.log('RMB',randomBytes(32).toString('hex'))
   return (
     <ChakraProvider theme={newTheme} cssVarsRoot={undefined}>
       <Modal
@@ -122,12 +100,17 @@ export function CustomCapsuleModalViewXX({ capsule }: { capsule: Capsule }) {
         <ModalOverlay />
         <ModalContent
           backgroundColor={"brand.background"}
-          width="584px"
-          height="544px"
+          borderRadius={'3xl'}
+          w="584px"
+          h="544px"
+          maxW="584px"
+          maxH="544px"
+          minH="544px"
         >
           {/* <div className="relative z-[3]"> */}
           <ModalBody>
             <VStack>
+              <div className="mt-1" />
               <SLHeader
                 onClose={() => {
                   setShowCapsuleModal(false);
@@ -136,7 +119,7 @@ export function CustomCapsuleModalViewXX({ capsule }: { capsule: Capsule }) {
                   }
                 }}
               />
-              <div className="flex-grow border-t border-2 border-gray-400" />
+              <div className="w-full flex-grow border-t border-1 border-gray-200" />
               <SLEmailVerification
                 emailInput={emailInput}
                 setEmailInput={setEmailInput}
@@ -148,6 +131,7 @@ export function CustomCapsuleModalViewXX({ capsule }: { capsule: Capsule }) {
                 resendStatus={resendStatus}
               />
               <SLBiometricVerification
+                capsule={capsule}
                 currentStep={currentStep}
                 webAuthURLForCreate={webAuthURLForCreate}
                 webAuthURLForLogin={webAuthURLForLogin}
@@ -177,8 +161,27 @@ export function CustomCapsuleModalViewXX({ capsule }: { capsule: Capsule }) {
               {currentStep !== ModalStep.BIOMETRIC_CREATION &&
                 currentStep !== ModalStep.BIOMETRIC_LOGIN && (
                   <button
+                    style={{
+                      display: "flex",
+                      bottom: "0",
+                      margin: "1.5rem",
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "1.5rem",
+                      borderStyle: "none",
+                      height: "3rem",
+                      fontSize: "0.875rem",
+                      lineHeight: "1.25rem",
+                      color: '#FFF',
+                      fontWeight: 700,
+                      backgroundColor: "#059669",
+                      cursor: "pointer",
+                      marginTop: "97px",
+                      width: "90%",
+                    }}
                     className={classNames(
-                      "absolute bottom-0 m-6 mt-[97px] flex h-12 w-[calc(100%-50px)] cursor-pointer flex-row items-center justify-center rounded-3xl border-none bg-green-500 text-sm font-bold dark:text-white-100 lg:!text-md",
+                      "absolute bottom-0 m-6 mt-[97px] flex h-12 w-[calc(100%-50px)] cursor-pointer flex-row items-center justify-center rounded-3xl border-none bg-green-600 text-sm font-bold text-white-100 lg:!text-md",
                       { "opacity-30": disableContinue },
                     )}
                     onClick={async () => {
@@ -216,7 +219,7 @@ export function CustomCapsuleModalViewXX({ capsule }: { capsule: Capsule }) {
 export const newTheme = extendTheme({
   colors: {
     brand: {
-      background: "#080B0F",
+      background: "#FFF",
       content: "#FFFFFF",
       dimmed: "#E5E5E5",
       dimmed2: "#C8C8C8",
