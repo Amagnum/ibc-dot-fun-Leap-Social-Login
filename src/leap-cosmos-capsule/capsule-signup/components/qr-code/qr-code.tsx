@@ -7,25 +7,25 @@ import QRCodeStyling, {
   Mode,
   Options,
   TypeNumber,
-} from 'qr-code-styling';
-import React, { ReactElement,useEffect, useRef, useState } from 'react';
+} from "qr-code-styling";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 
-import { Images } from '../../images';
-
-
-export type QrCodeProps = { data: string; height: number; width: number } & Options;
+export type QrCodeProps = {
+  data: string;
+  height: number;
+  width: number;
+} & Options;
 
 function QrCode(QrCodeProps: QrCodeProps): ReactElement {
   const options = {
     width: QrCodeProps.width,
     height: QrCodeProps.height,
-    image: Images.Misc.LeapQrIcon,
     margin: 8,
-    type: 'svg' as DrawType,
+    type: "svg" as DrawType,
     qrOptions: {
       typeNumber: 0 as TypeNumber,
-      mode: 'Byte' as Mode,
-      errorCorrectionLevel: 'Q' as ErrorCorrectionLevel,
+      mode: "Byte" as Mode,
+      errorCorrectionLevel: "Q" as ErrorCorrectionLevel,
     },
     imageOptions: {
       hideBackgroundDots: true,
@@ -33,19 +33,19 @@ function QrCode(QrCodeProps: QrCodeProps): ReactElement {
       margin: 10,
     },
     dotsOptions: {
-      color: '#000',
-      type: 'dots' as DotType,
+      color: "#000",
+      type: "dots" as DotType,
     },
     backgroundOptions: {
-      color: '#FFF',
+      color: "#FFF",
     },
     cornersSquareOptions: {
-      color: '#000',
-      type: 'dot' as CornerSquareType,
+      color: "#000",
+      type: "dot" as CornerSquareType,
     },
     cornersDotOptions: {
-      color: '#000',
-      type: 'dot' as CornerDotType,
+      color: "#000",
+      type: "dot" as CornerDotType,
     },
     ...(QrCodeProps as Options),
   } as Options;
@@ -56,17 +56,22 @@ function QrCode(QrCodeProps: QrCodeProps): ReactElement {
   useEffect(() => {
     if (ref.current) {
       qrCode.append(ref.current);
+      console.log("appending QR code");
     }
   }, [qrCode, ref]);
 
+  console.log("QR", window, qrCode);
+
+  if (typeof window === "undefined") return <></>;
+
   return (
-    <div
-      ref={ref}
-      style={{
-        height: QrCodeProps.height,
-        width: QrCodeProps.width,
-      }}
-    />
+      <div
+        ref={ref}
+        style={{
+          height: QrCodeProps.height,
+          width: QrCodeProps.width,
+        }}
+      />
   );
 }
 

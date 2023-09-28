@@ -1,4 +1,3 @@
-import {QrCode} from '@leapwallet/leap-ui'
 import React, { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
@@ -6,6 +5,7 @@ import { capsuleState } from '@/leap-cosmos-capsule/atoms'
 
 import { ModalStep } from '../../constant'
 import { LoaderAnimation } from '../loader/Loader'
+import QrCode from '../qr-code'
 
 
 export default function SLBiometricVerification({

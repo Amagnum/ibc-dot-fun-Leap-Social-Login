@@ -1,19 +1,22 @@
 import Capsule from "@usecapsule/web-sdk";
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
+
+import QRCode from "@/leap-cosmos-capsule/capsule-signup/components/qr-code/qr-code"
 
 import { ModalStep } from "../../constant";
 import { LoaderAnimation } from "../loader/Loader";
 
-const QRCode = dynamic(
-  () =>
-    import("@/leap-cosmos-capsule/capsule-signup/components/qr-code/qr-code").then(
-      (m) => m.default,
-    ),
-  {
-    ssr: false,
-  },
-);
+// const QRCode = dynamic(
+//   () =>
+//     import("@/leap-cosmos-capsule/capsule-signup/components/qr-code/qr-code").then(
+//       (m) => m.default,
+//     ),
+//   {
+//     ssr: false,
+
+//   },
+// );
 
 export default function SLBiometricVerification({
   capsule,
