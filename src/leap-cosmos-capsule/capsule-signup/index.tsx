@@ -3,11 +3,9 @@
 import {
   ChakraProvider,
   extendTheme,
-  HStack,
   Modal,
   ModalBody,
   ModalContent,
-  ModalHeader,
   ModalOverlay,
   VStack,
 } from "@chakra-ui/react";
@@ -48,6 +46,8 @@ export default function CustomCapsuleModalView({
   return (
     <>
       {!!CustomCapsuleModalView2 && (
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
         <CustomCapsuleModalView2
           capsule={capsule}
           showCapsuleModal={showCapsuleModal}

@@ -1,8 +1,6 @@
 import classNames from "classnames";
 import { ComponentPropsWithoutRef, forwardRef } from "react";
 
-import { Images } from "../../images";
-
 export default function SLHeader({ onClose }: { onClose: () => void }) {
   return (
     <>

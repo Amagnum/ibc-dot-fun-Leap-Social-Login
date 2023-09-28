@@ -21,7 +21,7 @@ import { wallets as cosmostationWallets } from "@cosmos-kit/cosmostation-extensi
 import { wallets as keplrWallets } from "@cosmos-kit/keplr-extension";
 import { wallets as leapWallets } from "@cosmos-kit/leap-extension";
 import { wallets as metamaskWallets } from "@cosmos-kit/leap-metamask-cosmos-snap";
-import { ChainProvider, useManager } from "@cosmos-kit/react";
+import { ChainProvider } from "@cosmos-kit/react";
 import * as RadixToast from "@radix-ui/react-toast";
 import { QueryClientProvider } from "@tanstack/react-query";
 import Capsule from "@usecapsule/web-sdk";
@@ -39,10 +39,8 @@ import { ChainsProvider } from "@/context/chains";
 import { ToastProvider } from "@/context/toast";
 import { CosmosCapsuleWallet } from "@/leap-cosmos-capsule";
 import { showCapsuleModelState } from "@/leap-cosmos-capsule/atoms";
-import CustomCapsuleModalView from "@/leap-cosmos-capsule/capsule-signup-2/capsule-signup";
 import { SkipProvider } from "@/solve";
 import { queryClient } from "@/utils/query";
-import { getChainByID } from "@/utils/utils";
 
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -299,13 +297,6 @@ export function CustomCapsuleModalViewX({
   const [showCapsuleModal, setShowCapsuleModal] = useRecoilState(
     showCapsuleModelState,
   );
-
-  
-  const chainName = getChainByID( "cosmoshub-4").chain_name;
-
-  const { getWalletRepo } = useManager();
-
-  const walletRepo = getWalletRepo(chainName);
 
   return (
     <>

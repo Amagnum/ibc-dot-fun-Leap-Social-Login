@@ -10,8 +10,8 @@ const STORAGE_PREFIX = '@CAPSULE/'
 const POLLING_INTERVAL_MS = 2000
 
 export default function useCapsule() {
-  const [showCapsuleModal, setShowCapsuleModal] = useRecoilState(showCapsuleModelState)
-  const [capsule, setCapsule] = useRecoilState(capsuleState);
+  const [showCapsuleModal ] = useRecoilState(showCapsuleModelState)
+  const [capsule ] = useRecoilState(capsuleState);
 
   const [emailInput, setEmailInput] = useState(capsule?.getEmail() ?? '')
   const [otpInput, setOtpInput] = useState('')
@@ -156,7 +156,11 @@ export default function useCapsule() {
     async function distributeShare() {
       if (!createWalletRes) return
       const result = await capsule.distributeNewWalletShare(
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
         createWalletRes[0].id,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
         createWalletRes[0].signer,
       )
       setRecoveryShare(result)
@@ -264,6 +268,7 @@ export default function useCapsule() {
         setError('')
         setCurrentStep(ModalStep.BIOMETRIC_CREATION)
       } catch (e) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         if (e.message.includes('429')) {
           setError('Too many attempts')

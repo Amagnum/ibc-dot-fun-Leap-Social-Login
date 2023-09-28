@@ -23,7 +23,7 @@ export default function SLBiometricVerification({
       : webAuthURLForLogin ?? ''
 
   const [shortLoginLink, setShortLoginLink] = useState<string>('')
-  const [capsule, setCapsule] = useRecoilState(capsuleState)
+  const [capsule] = useRecoilState(capsuleState)
 
   useEffect(() => {
     if (currentStep !== ModalStep.BIOMETRIC_LOGIN) {
@@ -31,8 +31,9 @@ export default function SLBiometricVerification({
     }
     async function shortenUrl() {
       const upload = await import("@usecapsule/web-sdk/dist/transmission/transmissionUtils").then(m=>m.upload);
-      const url = await upload(hotLink, capsule)
-      // @ts-ignore
+      const url = await upload(hotLink, capsule.ctx.capsuleClient)
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
       setShortLoginLink(capsule.getShortUrl(url))
     }
     // eslint-disable-next-line no-constant-condition

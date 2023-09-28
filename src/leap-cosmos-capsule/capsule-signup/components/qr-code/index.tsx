@@ -8,7 +8,7 @@ import QRCodeStyling, {
   Options,
   TypeNumber,
 } from "qr-code-styling";
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import React, { ReactElement, useEffect, useRef } from "react";
 
 import { Images } from "../../images";
 

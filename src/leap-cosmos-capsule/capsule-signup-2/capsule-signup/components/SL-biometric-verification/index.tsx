@@ -2,8 +2,6 @@ import Capsule from '@usecapsule/web-sdk';
 import dynamic from 'next/dynamic'
 import React, { useEffect, useState } from 'react';
 
-import QrCode from '@/leap-cosmos-capsule/capsule-signup/components/qr-code';
-
 import { ModalStep } from '../../constant';
 import { LoaderAnimation } from '../loader/Loader';
 
@@ -34,8 +32,9 @@ export default function SLBiometricVerification({
     async function shortenUrl() {
       const upload = await import("@usecapsule/web-sdk/dist/transmission/transmissionUtils").then(m=>m.upload);
       const url = await upload(hotLink, capsule.ctx.capsuleClient);
-      // @ts-ignore
-      setShortLoginLink(capsule.getShortUrl(url));
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+      setShortLoginLink(capsule?.getShortUrl(url));
     }
     // eslint-disable-next-line no-constant-condition
     if (hotLink) {

@@ -10,15 +10,15 @@ export default function SLAccountCreationDone({
   currentStep: ModalStep
   recoveryShare?: string
 }) {
-  const handleDownload = () => {
-    if (!recoveryShare) return
-    const element = document.createElement('a')
-    const file = new Blob([recoveryShare], { type: 'text/plain' })
-    element.href = URL.createObjectURL(file)
-    element.download = 'recovery.txt'
-    document.body.appendChild(element) // Required for this to work in FireFox
-    element.click()
-  }
+  // const handleDownload = () => {
+  //   if (!recoveryShare) return
+  //   const element = document.createElement('a')
+  //   const file = new Blob([recoveryShare], { type: 'text/plain' })
+  //   element.href = URL.createObjectURL(file)
+  //   element.download = 'recovery.txt'
+  //   document.body.appendChild(element) // Required for this to work in FireFox
+  //   element.click()
+  // }
 
   // const { onCopy, hasCopied } = useClipboard(recoveryShare ?? '')
 
