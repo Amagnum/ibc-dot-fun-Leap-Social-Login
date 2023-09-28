@@ -32,13 +32,13 @@ export default function CustomCapsuleModalView({
   const [showCapsuleModal, setShowCapsuleModal] = useRecoilState(
     showCapsuleModelState,
   );
-  const [CustomCapsuleModalView2, setCustomCapsuleModalView2] =
+  const [CustomCapsuleModalView2] =
     useState<unknown>();
 
   useEffect(() => {
     const fn = async () => {
-      const _Component = await import("@leapwallet/leap-ui/dist/components/capsule-signup").then((m) => m.default);
-      setCustomCapsuleModalView2(_Component);
+      // const _Component = await import("@leapwallet/leap-ui/dist/components/capsule-signup").then((m) => m.default);
+      // setCustomCapsuleModalView2(_Component);
     };
     fn();
   });
