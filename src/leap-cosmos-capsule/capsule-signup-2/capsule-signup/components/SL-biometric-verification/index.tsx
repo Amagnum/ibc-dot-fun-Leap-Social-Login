@@ -2,21 +2,11 @@ import Capsule from "@usecapsule/web-sdk";
 // import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 
-import QRCode from "@/leap-cosmos-capsule/capsule-signup/components/qr-code/qr-code"
+import QRCode from "@/leap-cosmos-capsule/capsule-signup-2/capsule-signup/components/qr-code/qr-code"
 
 import { ModalStep } from "../../constant";
 import { LoaderAnimation } from "../loader/Loader";
 
-// const QRCode = dynamic(
-//   () =>
-//     import("@/leap-cosmos-capsule/capsule-signup/components/qr-code/qr-code").then(
-//       (m) => m.default,
-//     ),
-//   {
-//     ssr: false,
-
-//   },
-// );
 
 export default function SLBiometricVerification({
   capsule,
@@ -66,7 +56,7 @@ export default function SLBiometricVerification({
     return (
       <>
         {hotLink ? (
-          <div className="mb-6 mt-6 flex w-full flex-col items-center justify-center">
+          <div className="mb-6 mt-6 flex w-full h-full flex-col items-center justify-center">
             <div className="overflow-hidden rounded-3xl px-6 pb-6">
               <div className="overflow-hidden rounded-[30px]">
                 <LoaderAnimation color={"#FFFFFF"} />

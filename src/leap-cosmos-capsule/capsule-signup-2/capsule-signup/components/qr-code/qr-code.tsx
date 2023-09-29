@@ -1,5 +1,3 @@
-export * from './qr-code'
-
 import QRCodeStyling, {
   CornerDotType,
   CornerSquareType,
@@ -11,20 +9,8 @@ import QRCodeStyling, {
   TypeNumber,
 } from "qr-code-styling";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
-
+import Image from "next/image";
 import { Images } from "../../images";
-
-
-const fQRCodeStyling = async (options: Options): Promise<QRCodeStyling | null> => {
-  //Only do this on the client
-  if (typeof window !== 'undefined') {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const QRCodeStylingLib = await import('qr-code-styling').then(m=>m.default);
-    const qrCodeStyling: QRCodeStyling = new QRCodeStylingLib(options)
-    return qrCodeStyling
-  }
-  return null
-}
 
 export type QrCodeProps = {
   data: string;
@@ -36,7 +22,6 @@ function QrCode(QrCodeProps: QrCodeProps): ReactElement {
   const options = {
     width: QrCodeProps.width,
     height: QrCodeProps.height,
-    image: Images.Misc.LeapQrIcon,
     margin: 8,
     type: "svg" as DrawType,
     qrOptions: {
@@ -67,45 +52,46 @@ function QrCode(QrCodeProps: QrCodeProps): ReactElement {
     ...(QrCodeProps as Options),
   } as Options;
 
-  // const qrCode = useQRCodeStyling(options)
-  const [qrCode, setQrCode] = useState<QRCodeStyling | null>();
-
-  useEffect(() => {
-    const fn = async () => {
-      if (qrCode) return;
-      const finalC = await fQRCodeStyling(options);
-      console.log("finalC", finalC);
-      setQrCode(finalC);
-    };
-    fn();
-  });
-
+  const [qrCode] = useState<QRCodeStyling>(new QRCodeStyling(options));
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (ref.current) {
-      qrCode?.append(ref.current);
+      qrCode.append(ref.current);
+      console.log("appending QR code");
     }
   }, [qrCode, ref]);
 
-  useEffect(() => {
-    qrCode?.update({ data: QrCodeProps.data })
-  }, [QrCodeProps, qrCode])
+  console.log("QR", window, qrCode);
 
-  console.log('qrCode', qrCode)
+  if (typeof window === "undefined") return <></>;
 
   return (
-    <>
-      {qrCode && (
-        <div
-          ref={ref}
-          style={{
-            height: QrCodeProps.height,
-            width: QrCodeProps.width,
-          }}
-        />
-      )}
-    </>
+    <div style={{ position: "relative" }}>
+      <div
+        ref={ref}
+        style={{
+          height: QrCodeProps.height,
+          width: QrCodeProps.width,
+        }}
+      />
+      <Image
+        style={{
+          backgroundColor: "#FFF",
+          position: "absolute",
+          padding: 8,
+          height: 60,
+          width: 80,
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          zIndex: 1, // You can adjust the z-index as needed.
+        }}
+        priority
+        src={Images.Misc.LeapQrIcon}
+        alt="Follow us on Twitter"
+      />
+    </div>
   );
 }
 

@@ -5,7 +5,7 @@ import { capsuleState } from '@/leap-cosmos-capsule/atoms'
 
 import { ModalStep } from '../../constant'
 import { LoaderAnimation } from '../loader/Loader'
-import QrCode from '../qr-code'
+import QrCode from '../../../capsule-signup-2/capsule-signup/components/qr-code'
 
 
 export default function SLBiometricVerification({

@@ -131,9 +131,14 @@ export default function useCapsule(
   useEffect(() => {
     // TODO probably we should invalidate it after using...
     async function genPaillierKey() {
-      await capsule?.generatePaillierKey();
-      setPaillierGenDone(true);
-      setPercentKeygenDone(25);
+      try {
+        await capsule?.generatePaillierKey();
+        setPaillierGenDone(true);
+        setPercentKeygenDone(25);
+      } catch (e: unknown) {
+        console.log(e);
+        setError("Error Generating PaillierKey");
+      }
     }
     genPaillierKey();
   }, []);
@@ -151,10 +156,15 @@ export default function useCapsule(
     }
     async function genWallet() {
       setWalletCreationInProgress(true);
-      const createWalletRes = await capsule.createWallet(
-        true,
-        keygenStatusFunction,
-      );
+      let createWalletRes;
+      try {
+        createWalletRes = await capsule.createWallet(
+          true,
+          keygenStatusFunction,
+        );
+      } catch (e) {
+        setError("Error Creating wallet");
+      }
       setCreateWalletRes(createWalletRes);
       setWalletCreated(true);
       setWalletCreationInProgress(false);
@@ -170,10 +180,15 @@ export default function useCapsule(
 
     async function distributeShare() {
       if (!createWalletRes) return;
-      const result = await capsule.distributeNewWalletShare(
-        createWalletRes[0].id,
-        createWalletRes[0].signer,
-      );
+      let result;
+      try {
+        result = await capsule.distributeNewWalletShare(
+          createWalletRes[0].id,
+          createWalletRes[0].signer,
+        );
+      } catch (e) {
+        setError("Error creating distribution for new wallet share");
+      }
       setRecoveryShare(result);
       setDistributeDone(true);
       if (currentStep === ModalStep.AWAITING_WALLET_CREATION_AFTER_LOGIN) {
@@ -218,7 +233,7 @@ export default function useCapsule(
   async function awaitLoginTransition(): Promise<void> {
     try {
       const isActive = await capsule.isSessionActive();
-      
+
       console.log("Awating awaitLoginTransition", isActive, capsule);
       if (!isActive) {
         loginTimeout.current = window.setTimeout(
@@ -233,7 +248,7 @@ export default function useCapsule(
         (wallet) => !!wallet.address,
       );
       const tempSharesRes = await capsule.getTransmissionKeyShares();
-      console.log(fetchedWallets, tempSharesRes)
+      console.log(fetchedWallets, tempSharesRes);
       // need this check for the case where user has logged in but temp encrypted shares
       // haven't been sent to the backend yet
       if (tempSharesRes.data.temporaryShares.length === fetchedWallets.length) {
@@ -251,6 +266,7 @@ export default function useCapsule(
     } catch (err) {
       // want to continue polling on error and still set timeout
       console.error(err);
+      setError("Error fetching wallet!");
     }
     loginTimeout.current = window.setTimeout(
       awaitLoginTransition,

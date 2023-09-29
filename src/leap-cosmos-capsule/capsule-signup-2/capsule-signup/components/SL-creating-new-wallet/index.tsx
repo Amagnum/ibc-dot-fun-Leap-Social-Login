@@ -3,7 +3,6 @@ import { CircularProgress } from '@chakra-ui/react'
 import React from 'react'
 
 import { ModalStep } from '../../constant'
-import { LoaderAnimation } from '../loader/Loader'
 
 export default function SLCreatingNewWallet({
   currentStep,
@@ -27,7 +26,6 @@ export default function SLCreatingNewWallet({
         </div>
         <div className='overflow-hidden rounded-3xl px-6 pb-6'>
           <div className='overflow-hidden rounded-[30px]'>
-            <LoaderAnimation color={'#FFFFFF'} />
             <CircularProgress
               size='60px'
               thickness='10px'
