@@ -1,9 +1,11 @@
 import { WalletStatus } from "@cosmos-kit/core";
 import { useChain } from "@cosmos-kit/react";
 import { ArrowsUpDownIcon } from "@heroicons/react/20/solid";
+import dynamic from "next/dynamic";
 import { FC, Fragment } from "react";
 
 import { useChains } from "@/context/chains";
+import WalletInfoModalView from "@/leap-cosmos-capsule/capsule-signup-2/capsule-signup/components/wallet-info";
 
 import AssetInput from "../AssetInput";
 import { ConnectedWalletButton } from "../ConnectedWalletButton";
@@ -11,6 +13,14 @@ import { ConnectWalletButtonSmall } from "../ConnectWalletButtonSmall";
 import TransactionDialog from "../TransactionDialog";
 import { useWalletModal, WalletModal } from "../WalletModal";
 import { useSwapWidget } from "./useSwapWidget";
+
+const WalletInfo = dynamic(
+  () =>
+    import(
+      "@/leap-cosmos-capsule/capsule-signup-2/capsule-signup/components/wallet-info"
+    ).then((m) => m.default),
+  { ssr: false },
+);
 
 const RouteLoading = () => (
   <div className="bg-black text-white/50 font-medium uppercase text-xs p-3 rounded-md flex items-center w-full text-left">
@@ -84,6 +94,7 @@ export const SwapWidget: FC = () => {
     wallet,
   } = useChain(sourceChain?.record?.chain.chain_name ?? "cosmoshub");
 
+  console.log(address, wallet, walletConnectStatus);
   return (
     <Fragment>
       <div>
@@ -93,18 +104,21 @@ export const SwapWidget: FC = () => {
             {address &&
             wallet &&
             walletConnectStatus === WalletStatus.Connected ? (
-              <ConnectedWalletButton
-                address={address}
-                onClick={openWalletModal}
-                walletName={wallet.prettyName}
-                walletLogo={
-                  wallet.logo
-                    ? typeof wallet.logo === "string"
-                      ? wallet.logo
-                      : wallet.logo.major
-                    : ""
-                }
-              />
+              <div className="flex flex-row gap-2">
+                <WalletInfo address={address} />
+                <ConnectedWalletButton
+                  address={address}
+                  onClick={openWalletModal}
+                  walletName={wallet.prettyName}
+                  walletLogo={
+                    wallet.logo
+                      ? typeof wallet.logo === "string"
+                        ? wallet.logo
+                        : wallet.logo.major
+                      : ""
+                  }
+                />
+              </div>
             ) : (
               <ConnectWalletButtonSmall onClick={openWalletModal} />
             )}
