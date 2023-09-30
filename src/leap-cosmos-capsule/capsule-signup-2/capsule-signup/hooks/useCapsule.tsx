@@ -101,6 +101,20 @@ export default function useCapsule(
     paillierGenDone ? 25 : 0,
   );
 
+  const onReset = () => {
+    setCurrentStep(ModalStep.EMAIL_COLLECTION);
+    setIsFullyLoggedIn(false);
+    setDistributeDone(false);
+    setIsCreateAccountType(false);
+    setWebAuthURLForLogin("");
+    setWebAuthURLForLogin("");
+    setWebAuthURLForCreate("");
+    setWalletCreated(false);
+    setPercentKeygenDone(paillierGenDone ? 25 : 0);
+    setCreateWalletRes(undefined);
+    setRecoveryShare(undefined);
+  };
+
   useEffect(() => {
     if (
       !showCapsuleModal &&
@@ -323,9 +337,17 @@ export default function useCapsule(
     }
   };
 
+  useEffect(() => {
+    if (currentStep === ModalStep.VERIFICATION_CODE) {
+      setCurrentStep(ModalStep.EMAIL_COLLECTION);
+    }
+  }, [emailInput]);
+
   return {
     currentStep,
     setCurrentStep,
+
+    onReset,
 
     // Email
     emailInput,

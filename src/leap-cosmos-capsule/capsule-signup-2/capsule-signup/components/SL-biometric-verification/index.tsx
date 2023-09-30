@@ -2,11 +2,10 @@ import Capsule from "@usecapsule/web-sdk";
 // import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
 
-import QRCode from "@/leap-cosmos-capsule/capsule-signup-2/capsule-signup/components/qr-code/qr-code"
+import QRCode from "@/leap-cosmos-capsule/capsule-signup-2/capsule-signup/components/qr-code/qr-code";
 
 import { ModalStep } from "../../constant";
 import { LoaderAnimation } from "../loader/Loader";
-
 
 export default function SLBiometricVerification({
   capsule,
@@ -68,7 +67,7 @@ export default function SLBiometricVerification({
     );
   }
 
-  console.log(shortLoginLink);
+  console.log(shortLoginLink, window?.innerWidth);
 
   return (
     <>
@@ -90,7 +89,11 @@ export default function SLBiometricVerification({
           >
             <div className="overflow-hidden rounded-[30px]">
               {shortLoginLink && (
-                <QRCode data={shortLoginLink ?? ""} height={350} width={350} />
+                <QRCode
+                  data={shortLoginLink ?? ""}
+                  height={Math.min(350, window?.innerWidth ?? 350)}
+                  width={Math.min(350, window?.innerWidth ?? 350)}
+                />
               )}
             </div>
           </div>
@@ -115,7 +118,11 @@ export default function SLBiometricVerification({
               }}
             >
               {shortLoginLink && (
-                <QRCode data={shortLoginLink ?? ""} height={350} width={350} />
+                <QRCode
+                  data={shortLoginLink ?? ""}
+                  height={Math.min(350, window?.innerWidth ?? 350)}
+                  width={Math.min(350, window?.innerWidth ?? 350)}
+                />
               )}
             </div>
           </div>

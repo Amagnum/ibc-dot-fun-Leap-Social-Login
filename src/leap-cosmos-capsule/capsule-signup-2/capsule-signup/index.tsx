@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-
+import { CheckBadgeIcon } from "@heroicons/react/20/solid";
 import {
   ChakraProvider,
   extendTheme,
@@ -53,6 +53,7 @@ export default function CustomCapsuleModalView({
     webAuthURLForLogin,
 
     percentKeygenDone,
+    onReset,
 
     recoveryShare,
   } = useCapsule(capsule, showCapsuleModal);
@@ -100,10 +101,10 @@ export default function CustomCapsuleModalView({
         <ModalOverlay />
         <ModalContent
           backgroundColor={"brand.background"}
-          borderRadius={'3xl'}
+          borderRadius={"3xl"}
           w="584px"
           h="544px"
-          maxW="584px"
+          maxW={`${Math.min(584, window?.innerWidth ?? 584)}px`}
           maxH="544px"
           minH="544px"
         >
@@ -112,6 +113,10 @@ export default function CustomCapsuleModalView({
             <VStack>
               <div className="mt-1" />
               <SLHeader
+                currentStep={currentStep}
+                onBack={() => {
+                  onReset();
+                }}
                 onClose={() => {
                   setShowCapsuleModal(false);
                   if (currentStep === ModalStep.ACCOUNT_CREATION_DONE) {
@@ -119,7 +124,24 @@ export default function CustomCapsuleModalView({
                   }
                 }}
               />
-              <div className="w-full flex-grow border-t border-1 border-gray-200" />
+              <div
+                style={{
+                  flexGrow: 1,
+                  borderTopWidth: "1px",
+                  borderColor: "#E5E7EB",
+                  width: "100%",
+                }}
+              />
+
+              {(currentStep === ModalStep.LOGIN_DONE ||
+                currentStep === ModalStep.ACCOUNT_CREATION_DONE) && (
+                <div className="m-6 flex flex-row items-center justify-center">
+                  <CheckBadgeIcon
+                    style={{ height: "50%", width: "50%", color: "#059669" }}
+                  />
+                </div>
+              )}
+
               <SLEmailVerification
                 emailInput={emailInput}
                 setEmailInput={setEmailInput}
@@ -145,16 +167,13 @@ export default function CustomCapsuleModalView({
                 recoveryShare={recoveryShare}
               />
 
-              {(currentStep === ModalStep.LOGIN_DONE ||
-                currentStep === ModalStep.ACCOUNT_CREATION_DONE) && (
-                <div className="m-6 flex flex-row items-center justify-center">
-                  <div className="material-icons-round text-xxl text-green-500">
-                    check_circle
-                  </div>
-                </div>
-              )}
-
-              <div className="mb-6 text-md font-bold text-red-600 dark:text-red-600">
+              <div
+                style={{
+                  marginBottom: "1.5rem",
+                  fontWeight: 700,
+                  color: "#DC2626",
+                }}
+              >
                 {error}
               </div>
 
@@ -173,7 +192,7 @@ export default function CustomCapsuleModalView({
                       height: "3rem",
                       fontSize: "0.875rem",
                       lineHeight: "1.25rem",
-                      color: '#FFF',
+                      color: "#FFF",
                       fontWeight: 700,
                       backgroundColor: "#059669",
                       cursor: "pointer",
