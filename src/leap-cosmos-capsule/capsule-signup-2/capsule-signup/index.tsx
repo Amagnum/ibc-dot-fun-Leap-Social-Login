@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import { CheckBadgeIcon } from "@heroicons/react/20/solid";
 import {
   ChakraProvider,
   extendTheme,
@@ -10,6 +9,7 @@ import {
   ModalOverlay,
   VStack,
 } from "@chakra-ui/react";
+import { CheckBadgeIcon } from "@heroicons/react/20/solid";
 import Capsule from "@usecapsule/web-sdk";
 import classNames from "classnames";
 import React, { useEffect } from "react";

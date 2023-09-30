@@ -1,3 +1,4 @@
+import Image from "next/image";
 import QRCodeStyling, {
   CornerDotType,
   CornerSquareType,
@@ -9,7 +10,7 @@ import QRCodeStyling, {
   TypeNumber,
 } from "qr-code-styling";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
-import Image from "next/image";
+
 import { Images } from "../../images";
 
 export type QrCodeProps = {
