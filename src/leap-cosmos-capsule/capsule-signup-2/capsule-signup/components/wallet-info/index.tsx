@@ -22,7 +22,7 @@ export type WalletInfoModalProps = {
 
 export default function WalletInfoModalView({ address }: WalletInfoModalProps) {
   const [showWalletInfo, setShowWalletInfo] = useState(false);
-  const { onCopy, value, setValue, hasCopied } = useClipboard(address);
+  const { onCopy, hasCopied } = useClipboard(address);
 
   return (
     <>
