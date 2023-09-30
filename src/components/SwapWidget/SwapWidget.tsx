@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import { FC, Fragment } from "react";
 
 import { useChains } from "@/context/chains";
-import WalletInfoModalView from "@/leap-cosmos-capsule/capsule-signup-2/capsule-signup/components/wallet-info";
 
 import AssetInput from "../AssetInput";
 import { ConnectedWalletButton } from "../ConnectedWalletButton";
