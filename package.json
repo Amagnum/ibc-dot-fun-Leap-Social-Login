@@ -44,7 +44,7 @@
     "@types/node": "20.1.2",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
-    "@usecapsule/web-sdk": "^0.23.0",
+    "@usecapsule/web-sdk": "^0.26.0",
     "@vercel/analytics": "^1.0.1",
     "@web3modal/core": "^2.7.0",
     "@web3modal/ui": "^2.7.0",

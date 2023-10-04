@@ -76,6 +76,7 @@ export default function useCapsule(
       throw new Error("email is required");
     }
     capsule?.clearStorage(true);
+    await capsule.logout();
 
     try {
       const userExists = await capsule?.checkIfUserExists(emailInput);
@@ -113,6 +114,7 @@ export default function useCapsule(
     setPercentKeygenDone(paillierGenDone ? 25 : 0);
     setCreateWalletRes(undefined);
     setRecoveryShare(undefined);
+    capsule.logout()
   };
 
   useEffect(() => {

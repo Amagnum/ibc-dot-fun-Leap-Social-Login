@@ -2,7 +2,6 @@
 import "../styles/globals.css";
 import "@interchain-ui/react/styles";
 
-
 console.log(global, global.self);
 
 if (typeof global.self === "undefined") {
@@ -10,10 +9,9 @@ if (typeof global.self === "undefined") {
 }
 
 if (typeof global.addEventListener === "undefined") {
-  global.addEventListener = () => { };
-  global.removeEventListener = () => { };
+  global.addEventListener = () => {};
+  global.removeEventListener = () => {};
 }
-
 
 console.log(global, global.self);
 
@@ -41,7 +39,6 @@ import { CosmosCapsuleWallet } from "@/leap-cosmos-capsule";
 import { showCapsuleModelState } from "@/leap-cosmos-capsule/atoms";
 import { SkipProvider } from "@/solve";
 import { queryClient } from "@/utils/query";
-
 
 export default function App({ Component, pageProps }: AppProps) {
   chains.push({
@@ -187,58 +184,60 @@ export default function App({ Component, pageProps }: AppProps) {
     ],
   });
 
-  const [cosmosCapsuleWallet, setCosmosCapsuleWallet] = useState<CosmosCapsuleWallet>()
-  const [capsule, setCapsule] = useState<Capsule>()
-  
+  const [cosmosCapsuleWallet, setCosmosCapsuleWallet] =
+    useState<CosmosCapsuleWallet>();
+  const [capsule, setCapsule] = useState<Capsule>();
 
-  useEffect(()=>{
-    const fn = async () =>{
-      if(!cosmosCapsuleWallet)
-      {
-        const WalletClass = await import('@/leap-cosmos-capsule/main-wallet').then(m=>m.CosmosCapsuleWallet);
-        const WalletInfo = await import('@/leap-cosmos-capsule/registry').then(m=>m.LeapCapsuleInfo);
-        const cosmosCapsuleWallet = new WalletClass(WalletInfo)
+  useEffect(() => {
+    const fn = async () => {
+      if (!cosmosCapsuleWallet) {
+        const WalletClass = await import(
+          "@/leap-cosmos-capsule/main-wallet"
+        ).then((m) => m.CosmosCapsuleWallet);
+        const WalletInfo = await import("@/leap-cosmos-capsule/registry").then(
+          (m) => m.LeapCapsuleInfo,
+        );
+        const cosmosCapsuleWallet = new WalletClass(WalletInfo);
 
-        const _capsule = await import("@usecapsule/web-sdk").then((CapsuleModule) => {
-          const Capsule = CapsuleModule.default;
-          CapsuleModule.Environment;
-          const instance = new Capsule(
-            CapsuleModule.Environment.BETA,
-            undefined,
-            {
-              offloadMPCComputationURL:
-                "https://capsule.leapwallet.io/",
-            }
-          );
-          return instance;
-          }
-        )
+        const _capsule = await import("@usecapsule/web-sdk").then(
+          (CapsuleModule) => {
+            const Capsule = CapsuleModule.default;
+            CapsuleModule.Environment;
+            const instance = new Capsule(
+              CapsuleModule.Environment.BETA,
+              undefined,
+              {
+                offloadMPCComputationURL: "https://capsule.leapwallet.io/",
+              },
+            );
+            return instance;
+          },
+        );
 
         setCapsule(_capsule);
-        setCosmosCapsuleWallet(cosmosCapsuleWallet)
-        
+        setCosmosCapsuleWallet(cosmosCapsuleWallet);
       }
-    }
+    };
 
-    fn()
-  })
+    fn();
+  });
 
   let wallets = [
     ...keplrWallets,
     ...cosmostationWallets,
     ...leapWallets,
-    ...metamaskWallets
+    ...metamaskWallets,
   ];
 
   console.log(cosmosCapsuleWallet);
 
-  if(cosmosCapsuleWallet){
+  if (cosmosCapsuleWallet) {
     wallets = [
       ...keplrWallets,
       ...cosmostationWallets,
       ...leapWallets,
-      ...metamaskWallets, 
-      cosmosCapsuleWallet
+      ...metamaskWallets,
+      cosmosCapsuleWallet,
     ];
   }
 
@@ -255,30 +254,34 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <main>
         <QueryClientProvider client={queryClient}>
-          <RecoilRoot >
-          {!!cosmosCapsuleWallet && <ChainProvider
-            chains={chains}
-            assetLists={assets}
-            wallets={wallets}
-            wrappedWithChakra
-            throwErrors={false}
-          >
-            <SkipProvider>
-              <ChainsProvider>
-                <AssetsProvider>
-                  <RadixToast.ToastProvider>
-                    <ToastProvider>
-                      <MainLayout>
-                        <Component {...pageProps} />
-                      </MainLayout>
-                     {!!capsule && <CustomCapsuleModalViewX capsule={capsule}/>}
-                    </ToastProvider>
-                    <RadixToast.Viewport className="w-[390px] max-w-[100vw] flex flex-col gap-2 p-6 fixed bottom-0 right-0 z-[999999]" />
-                  </RadixToast.ToastProvider>
-                </AssetsProvider>
-              </ChainsProvider>
-            </SkipProvider>
-          </ChainProvider>}
+          <RecoilRoot>
+            {!!cosmosCapsuleWallet && (
+              <ChainProvider
+                chains={chains}
+                assetLists={assets}
+                wallets={wallets}
+                wrappedWithChakra
+                throwErrors={false}
+              >
+                <SkipProvider>
+                  <ChainsProvider>
+                    <AssetsProvider>
+                      <RadixToast.ToastProvider>
+                        <ToastProvider>
+                          <MainLayout>
+                            <Component {...pageProps} />
+                          </MainLayout>
+                          {!!capsule && (
+                            <CustomCapsuleModalViewX capsule={capsule} />
+                          )}
+                        </ToastProvider>
+                        <RadixToast.Viewport className="w-[390px] max-w-[100vw] flex flex-col gap-2 p-6 fixed bottom-0 right-0 z-[999999]" />
+                      </RadixToast.ToastProvider>
+                    </AssetsProvider>
+                  </ChainsProvider>
+                </SkipProvider>
+              </ChainProvider>
+            )}
           </RecoilRoot>
         </QueryClientProvider>
       </main>
@@ -287,27 +290,39 @@ export default function App({ Component, pageProps }: AppProps) {
   );
 }
 
-const CCUI = dynamic(()=>import('@/leap-cosmos-capsule/capsule-signup-2/capsule-signup').then((m)=>m.default),{ssr: false})
+const CCUI = dynamic(
+  () =>
+    import("@/leap-cosmos-capsule/capsule-signup-2/capsule-signup").then(
+      (m) => m.default,
+    ),
+  { ssr: false },
+);
+const CCUI2 = dynamic(
+  () =>
+    import("@/leap-cosmos-capsule/components/CapsuleModal").then(
+      (m) => m.default,
+    ),
+  { ssr: false },
+);
 
-export function CustomCapsuleModalViewX({
-  capsule,
-}: {
-  capsule: Capsule;
-}) {
+export function CustomCapsuleModalViewX({ capsule }: { capsule: Capsule }) {
   const [showCapsuleModal, setShowCapsuleModal] = useRecoilState(
     showCapsuleModelState,
   );
 
   return (
     <>
+      {false && <CCUI2 capsule={capsule} />}
+      {true && (
         <CCUI
           capsule={capsule}
           showCapsuleModal={showCapsuleModal}
           setShowCapsuleModal={setShowCapsuleModal}
-          onAfterLoginSuccessful={()=>{
+          onAfterLoginSuccessful={() => {
             location.reload();
           }}
         />
+      )}
     </>
   );
 }
