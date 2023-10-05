@@ -51,7 +51,7 @@ export default function CustomCapsuleModalView({
 
     webAuthURLForCreate,
     webAuthURLForLogin,
-
+    setError,
     percentKeygenDone,
     onReset,
 
@@ -65,12 +65,14 @@ export default function CustomCapsuleModalView({
   // initialize wallet in leap repo
   useEffect(() => {
     console.log(currentStep, capsule);
+    setError("");
     if (currentStep === ModalStep.LOGIN_DONE) {
       const fn = async () => {
         if (await capsule.isSessionActive()) {
           if (Object.values(capsule.getWallets()).length > 0) {
             setShowCapsuleModal(false);
             onAfterLoginSuccessful();
+            onReset();
           }
         }
       };
@@ -215,6 +217,7 @@ export default function CustomCapsuleModalView({
                           setCurrentStep(ModalStep.LOGIN_DONE);
                           break;
                         case ModalStep.LOGIN_DONE:
+                          onReset();
                           location.reload();
                           break;
                         default:

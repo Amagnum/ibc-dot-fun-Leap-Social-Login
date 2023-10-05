@@ -29,6 +29,7 @@ export class CosmosCapsuleClient implements WalletClient {
 
   async disconnect() {
     this.capsuleClinet.logout();
+    location.reload();
   }
 
   async getSimpleAccount(chainId: string) {
@@ -84,14 +85,14 @@ export class CosmosCapsuleClient implements WalletClient {
     return new CapsuleAminoSigner(
       this.capsuleClinet,
       chainIdtoAddressPrefix[chainId],
-      wallets?.id
+      wallets?.id,
     );
   }
 
   getOfflineSignerDirect(chainId: string) {
     return new cosmjsOfflineSigner(
       chainId,
-      this.capsuleClinet
+      this.capsuleClinet,
     ) as unknown as OfflineDirectSigner;
   }
 
@@ -99,15 +100,10 @@ export class CosmosCapsuleClient implements WalletClient {
     chainId: string,
     signer: string,
     signDoc: StdSignDoc,
-    signOptions?: SignOptions
+    signOptions?: SignOptions,
   ) {
     console.log(signOptions);
-    return requestAminoSignature(
-      this.capsuleClinet,
-      chainId,
-      signer,
-      signDoc
-    );
+    return requestAminoSignature(this.capsuleClinet, chainId, signer, signDoc);
   }
 
   async signDirect(chainId: string, signer: string, signDoc: DirectSignDoc) {

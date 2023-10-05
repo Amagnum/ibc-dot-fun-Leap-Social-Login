@@ -370,7 +370,7 @@ export default function useCapsule(
     webAuthURLForLogin,
 
     percentKeygenDone,
-
+    setError,
     recoveryShare,
   };
 }
