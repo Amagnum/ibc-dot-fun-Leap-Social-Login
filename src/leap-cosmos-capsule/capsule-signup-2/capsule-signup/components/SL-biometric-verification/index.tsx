@@ -38,6 +38,7 @@ export default function SLBiometricVerification({
       //@ts-ignore
       setShortLoginLink(capsule?.getShortUrl(url));
     }
+
     // eslint-disable-next-line no-constant-condition
     if (hotLink) {
       shortenUrl();
@@ -45,6 +46,16 @@ export default function SLBiometricVerification({
       setShortLoginLink(hotLink ?? "");
     }
   }, [hotLink]);
+
+  useEffect(() => {
+    if (currentStep === ModalStep.BIOMETRIC_CREATION || currentStep === ModalStep.BIOMETRIC_LOGIN) {
+      window.open(
+        shortLoginLink,
+        "popup",
+        "popup=true,width=400,height=500",
+      );
+    }
+  }, [shortLoginLink])
 
   if (
     (currentStep !== ModalStep.BIOMETRIC_CREATION &&
@@ -73,9 +84,14 @@ export default function SLBiometricVerification({
     <>
       {currentStep === ModalStep.BIOMETRIC_CREATION && (
         <div className="mb-6 mt-6 flex w-full flex-col items-center justify-center ">
-          <div className="mb-6 text-sm font-bold text-gray-800">
-            Create a passkey to authenticate without having to enter your
-            username or password by scanning/clicking the QR code below.
+          <div style={{textAlign: 'center'}} className="mb-6 text-sm font-bold text-gray-800">
+          Complete the steps in opened window to finish login
+          </div>
+          <div style={{margin: '20px'}} className='text-md font-bold text-black-100 dark:text-white-100'>
+            Waiting for passkey Authentication...
+            <div className="overflow-hidden rounded-[30px]">
+                <LoaderAnimation color={"#FFFFFF"} />
+            </div>
           </div>
           <div
             className="overflow-hidden rounded-3xl px-6 pb-6"
@@ -102,11 +118,22 @@ export default function SLBiometricVerification({
 
       {currentStep === ModalStep.BIOMETRIC_LOGIN && (
         <div className="mb-6 mt-6 flex w-full flex-col items-center justify-center">
-          <div className="mb-6 text-sm font-bold text-gray-800">
-            Verify with a passkey to authenticate without having to enter your
-            username or password by scanning/clicking the QR code below.
+          <div style={{textAlign: 'center'}}  className='mb-6 text-md font-bold text-black-100 dark:text-white-100'>
+          Complete the steps in opened window to finish login
           </div>
-          <div className="overflow-hidden z-20 rounded-3xl px-6 pb-6">
+          <div style={{margin: '20px'}} className='text-md font-bold text-black-100 dark:text-white-100'>
+            Waiting for passkey Authentication...
+            <div style={
+              {
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center'
+            }}
+            className="overflow-hidden rounded-[30px]">
+                <LoaderAnimation color={"#FFFFFF"} />
+            </div>
+          </div>
+          {/* <div className="overflow-hidden z-20 rounded-3xl px-6 pb-6">
             <div
               className="overflow-hidden rounded-[30px] hover:cursor-pointer"
               onClick={() => {
@@ -125,7 +152,7 @@ export default function SLBiometricVerification({
                 />
               )}
             </div>
-          </div>
+          </div> */}
         </div>
       )}
     </>

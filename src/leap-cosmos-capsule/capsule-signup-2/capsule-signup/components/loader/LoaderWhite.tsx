@@ -2,7 +2,7 @@ import Lottie from 'lottie-react'
 import React from 'react'
 import { ReactElement } from 'react'
 
-import loadingImage from './lottie-files/loading.json'
+import loadingImage from './lottie-files/loading_white.json'
 
 export type LoaderProps = {
   /** Big text shown below GIF. */
@@ -19,16 +19,16 @@ const defaultOptions = {
   },
 }
 
-export const LoaderAnimation = ({ color, className }: { color?: string; className?: string }) => {
+export const LoaderWhiteAnimation = ({ color, className }: { color?: string; className?: string }) => {
   return (
     <Lottie {...defaultOptions}  style={{ color: color }} className={className ?? 'h-12 w-12'} />
   )
 }
 
-export default function LoaderWhite({ title, color }: LoaderProps): ReactElement {
+export default function Loader({ title, color }: LoaderProps): ReactElement {
   return (
     <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
-      <LoaderAnimation color={color} />
+      <LoaderWhiteAnimation color={color} />
       {title && <div className='text-base font-bold text-gray-600 dark:text-gray-200'>{title}</div>}
     </div>
   )

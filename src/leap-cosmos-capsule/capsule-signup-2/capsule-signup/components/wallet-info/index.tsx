@@ -41,16 +41,17 @@ export default function WalletInfoModalView({ address }: WalletInfoModalProps) {
           onClose={() => {
             setShowWalletInfo(false);
           }}
+          size={'xs'}
         >
           <ModalOverlay />
           <ModalContent
             backgroundColor={"brand.background"}
             borderRadius={"3xl"}
-            w="584px"
-            h="544px"
-            maxW={`${Math.min(584, window?.innerWidth ?? 584)}px`}
-            maxH="544px"
-            minH="544px"
+            // w="584px"
+            // h="544px"
+            // maxW={`${Math.min(584, window?.innerWidth ?? 584)}px`}
+            // maxH="544px"
+            // minH="544px"
           >
             {/* <div className="relative z-[3]"> */}
             <ModalBody>

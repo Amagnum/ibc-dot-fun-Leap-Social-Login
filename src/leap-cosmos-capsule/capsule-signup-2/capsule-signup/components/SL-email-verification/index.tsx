@@ -33,7 +33,7 @@ export default function SLEmailVerification({
   return (
     <>
       <div className="mb-6 mt-4 flex w-full flex-col items-start justify-center">
-        <div className="mb-3 text-md font-bold text-black-100 dark:text-gray-200">
+        <div style={{ marginBottom: "10px"}} className="mb-3 text-md font-bold text-black-100 dark:text-gray-200">
           Your email
         </div>
         <div

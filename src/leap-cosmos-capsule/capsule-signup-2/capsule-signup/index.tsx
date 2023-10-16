@@ -12,7 +12,8 @@ import {
 import { CheckBadgeIcon } from "@heroicons/react/20/solid";
 import Capsule from "@usecapsule/web-sdk";
 import classNames from "classnames";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { LoaderWhiteAnimation } from "./components/loader/LoaderWhite";
 
 import SLAccountCreationDone from "./components/SL-account-creation-done";
 import SLBiometricVerification from "./components/SL-biometric-verification";
@@ -61,15 +62,44 @@ export default function CustomCapsuleModalView({
   const disableContinue = false;
 
   console.log(percentKeygenDone);
+  const [loading, setLoading] = useState(false);
+
+  const onButtonClick = async () => {
+    setLoading(true)
+    switch (currentStep) {
+      case ModalStep.EMAIL_COLLECTION:
+        await onEmailEnter();
+        setLoading(false)
+        break;
+      case ModalStep.VERIFICATION_CODE: // Wallet not created
+        await verifyCode();
+        setLoading(false)
+        break;
+      case ModalStep.ACCOUNT_CREATION_DONE: // Wallet not created
+        setCurrentStep(ModalStep.LOGIN_DONE);
+        setLoading(false)
+        break;
+      case ModalStep.LOGIN_DONE:
+        onReset();
+        setLoading(false)
+        location.reload();
+        break;
+      default:
+        setLoading(false)
+        break;
+    }
+  }
 
   // initialize wallet in leap repo
   useEffect(() => {
     console.log(currentStep, capsule);
     setError("");
+    setLoading(false)
     if (currentStep === ModalStep.LOGIN_DONE) {
       const fn = async () => {
         if (await capsule.isSessionActive()) {
           if (Object.values(capsule.getWallets()).length > 0) {
+            setLoading(false)
             setShowCapsuleModal(false);
             onAfterLoginSuccessful();
             onReset();
@@ -93,6 +123,7 @@ export default function CustomCapsuleModalView({
         blockScrollOnMount={false}
         isCentered={true}
         isOpen={showCapsuleModal}
+        size={'md'}
         onClose={() => {
           setShowCapsuleModal(false);
           if (currentStep === ModalStep.ACCOUNT_CREATION_DONE) {
@@ -104,11 +135,11 @@ export default function CustomCapsuleModalView({
         <ModalContent
           backgroundColor={"brand.background"}
           borderRadius={"3xl"}
-          w="584px"
-          h="544px"
-          maxW={`${Math.min(584, window?.innerWidth ?? 584)}px`}
-          maxH="544px"
-          minH="544px"
+          // w="500px"
+          // h="200px"
+          // maxW={`${Math.min(584, window?.innerWidth ?? 584)}px`}
+          // maxH="544px"
+          // minH="544px"
         >
           {/* <div className="relative z-[3]"> */}
           <ModalBody>
@@ -169,7 +200,7 @@ export default function CustomCapsuleModalView({
                 recoveryShare={recoveryShare}
               />
 
-              <div
+              { error && <div
                 style={{
                   marginBottom: "1.5rem",
                   fontWeight: 700,
@@ -178,11 +209,29 @@ export default function CustomCapsuleModalView({
               >
                 {error}
               </div>
-
+              } 
               {currentStep !== ModalStep.BIOMETRIC_CREATION &&
                 currentStep !== ModalStep.BIOMETRIC_LOGIN && (
                   <button
-                    style={{
+                    style={
+                      loading ? {
+                        display: "flex",
+                        bottom: "0",
+                        margin: "1.5rem",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: "1.5rem",
+                        borderStyle: "none",
+                        height: "3rem",
+                        fontSize: "0.875rem",
+                        lineHeight: "1.25rem",
+                        color: "#FFF",
+                        fontWeight: 700,
+                        backgroundColor: "#05966980",
+                        width: "90%",
+                      } : 
+                      {
                       display: "flex",
                       bottom: "0",
                       margin: "1.5rem",
@@ -198,35 +247,18 @@ export default function CustomCapsuleModalView({
                       fontWeight: 700,
                       backgroundColor: "#059669",
                       cursor: "pointer",
-                      marginTop: "97px",
                       width: "90%",
                     }}
                     className={classNames(
-                      "absolute bottom-0 m-6 mt-[97px] flex h-12 w-[calc(100%-50px)] cursor-pointer flex-row items-center justify-center rounded-3xl border-none bg-green-600 text-sm font-bold text-white-100 lg:!text-md",
+                      "bottom-0 m-6 flex h-12 w-[calc(100%-50px)] cursor-pointer flex-row items-center justify-center rounded-3xl border-none bg-green-600 text-sm font-bold text-white-100 lg:!text-md",
                       { "opacity-30": disableContinue },
                     )}
-                    onClick={async () => {
-                      switch (currentStep) {
-                        case ModalStep.EMAIL_COLLECTION:
-                          await onEmailEnter();
-                          break;
-                        case ModalStep.VERIFICATION_CODE: // Wallet not created
-                          await verifyCode();
-                          break;
-                        case ModalStep.ACCOUNT_CREATION_DONE: // Wallet not created
-                          setCurrentStep(ModalStep.LOGIN_DONE);
-                          break;
-                        case ModalStep.LOGIN_DONE:
-                          onReset();
-                          location.reload();
-                          break;
-                        default:
-                          break;
-                      }
-                    }}
-                    disabled={disableContinue}
+                    onClick={onButtonClick}
+                    disabled={loading}
                   >
-                    {"Continue"}
+                    {
+                      loading ? <LoaderWhiteAnimation color="white"/> : 'Continue'
+                    }
                   </button>
                 )}
             </VStack>
