@@ -116,7 +116,6 @@ export default function CustomCapsuleModalView({
     }
   }, [currentStep]);
 
-  // console.log('RMB',randomBytes(32).toString('hex'))
   return (
     <ChakraProvider theme={newTheme} cssVarsRoot={undefined}>
       <Modal
@@ -135,11 +134,6 @@ export default function CustomCapsuleModalView({
         <ModalContent
           backgroundColor={"brand.background"}
           borderRadius={"3xl"}
-          // w="500px"
-          // h="200px"
-          // maxW={`${Math.min(584, window?.innerWidth ?? 584)}px`}
-          // maxH="544px"
-          // minH="544px"
         >
           {/* <div className="relative z-[3]"> */}
           <ModalBody>

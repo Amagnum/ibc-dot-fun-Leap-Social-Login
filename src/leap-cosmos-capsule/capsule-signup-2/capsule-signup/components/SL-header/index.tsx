@@ -2,7 +2,8 @@ import { ArrowLeftIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import classNames from "classnames";
 import { ComponentPropsWithoutRef, forwardRef } from "react";
 
-import { ModalStep } from "@/leap-cosmos-capsule/capsule-signup/constant";
+
+import { ModalStep } from "../../constant";
 
 export default function SLHeader({
   currentStep,

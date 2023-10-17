@@ -41,19 +41,13 @@ export default function WalletInfoModalView({ address }: WalletInfoModalProps) {
           onClose={() => {
             setShowWalletInfo(false);
           }}
-          size={'xs'}
+          size={'md'}
         >
           <ModalOverlay />
           <ModalContent
             backgroundColor={"brand.background"}
             borderRadius={"3xl"}
-            // w="584px"
-            // h="544px"
-            // maxW={`${Math.min(584, window?.innerWidth ?? 584)}px`}
-            // maxH="544px"
-            // minH="544px"
           >
-            {/* <div className="relative z-[3]"> */}
             <ModalBody>
               <VStack>
                 <div className="mt-1" />
@@ -83,7 +77,9 @@ export default function WalletInfoModalView({ address }: WalletInfoModalProps) {
                     width: "100%",
                   }}
                 />
-
+                <span>
+                  {address ?? ""}
+                </span>
                 <Button onClick={onCopy}>
                   {hasCopied ? "Copied!" : "Copy address"}
                 </Button>
@@ -94,7 +90,6 @@ export default function WalletInfoModalView({ address }: WalletInfoModalProps) {
                 />
               </VStack>
             </ModalBody>
-            {/* </div> */}
           </ModalContent>
         </Modal>
       </ChakraProvider>
