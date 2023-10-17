@@ -205,7 +205,8 @@ export default function CustomCapsuleModalView({
               </div>
               } 
               {currentStep !== ModalStep.BIOMETRIC_CREATION &&
-                currentStep !== ModalStep.BIOMETRIC_LOGIN && (
+                currentStep !== ModalStep.BIOMETRIC_LOGIN && 
+                currentStep !== ModalStep.AWAITING_WALLET_CREATION && (
                   <button
                     style={
                       loading ? {

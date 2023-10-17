@@ -80,11 +80,11 @@ export default function SLBiometricVerification({
     <>
       {currentStep === ModalStep.BIOMETRIC_CREATION && (
         <div className="mb-6 mt-6 flex w-full flex-col items-center justify-center ">
-          <div style={{textAlign: 'center'}} className="mb-6 text-sm font-bold text-gray-800">
+          {/* <div style={{textAlign: 'center'}} className="mb-6 text-sm font-bold text-gray-800">
           Complete the steps in opened window to finish login
-          </div>
+          </div> */}
           <div style={{margin: '20px'}} className='text-md font-bold text-black-100 dark:text-white-100'>
-            Waiting for passkey Authentication...
+            Waiting for passkey setup...
             <div style={
               {
               alignItems: 'center',
@@ -110,11 +110,11 @@ export default function SLBiometricVerification({
 
       {currentStep === ModalStep.BIOMETRIC_LOGIN && (
         <div className="mb-6 mt-6 flex w-full flex-col items-center justify-center">
-          <div style={{textAlign: 'center'}}  className='mb-6 text-md font-bold text-black-100 dark:text-white-100'>
+          {/* <div style={{textAlign: 'center'}}  className='mb-6 text-md font-bold text-black-100 dark:text-white-100'>
           Complete the steps in opened window to finish login
-          </div>
+          </div> */}
           <div style={{margin: '20px'}} className='text-md font-bold text-black-100 dark:text-white-100'>
-            Waiting for passkey Authentication...
+            Waiting for passkey setup...
             <div style={
               {
               alignItems: 'center',

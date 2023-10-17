@@ -218,7 +218,6 @@ export default function useCapsule(
 
   async function awaitWalletCreationTransition(): Promise<void> {
     try {
-      console.log("Awating awaitWalletCreationTransition");
       if (await capsule.isSessionActive()) {
         setIsFullyLoggedIn(true);
         setWebAuthURLForCreate("");

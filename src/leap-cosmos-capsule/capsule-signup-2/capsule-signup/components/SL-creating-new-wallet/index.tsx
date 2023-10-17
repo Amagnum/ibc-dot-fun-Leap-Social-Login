@@ -1,12 +1,11 @@
 
-import { CircularProgress } from '@chakra-ui/react'
 import React from 'react'
 
 import { ModalStep } from '../../constant'
+import { LoaderAnimation } from '../loader/Loader'
 
 export default function SLCreatingNewWallet({
   currentStep,
-  percentKeygenDone,
 }: {
   currentStep: ModalStep
   percentKeygenDone: number
@@ -25,14 +24,13 @@ export default function SLCreatingNewWallet({
           Creating Wallet
         </div>
         <div className='overflow-hidden rounded-3xl px-6 pb-6'>
-          <div className='overflow-hidden rounded-[30px]'>
-            <CircularProgress
-              size='60px'
-              thickness='10px'
-              color={'brand.content'}
-              trackColor={'brand.contentSecondary'}
-              value={percentKeygenDone}
-            />
+          <div style={
+              {
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center'
+            }} className='overflow-hidden rounded-[30px]'>
+            <LoaderAnimation />
           </div>
         </div>
       </div>
