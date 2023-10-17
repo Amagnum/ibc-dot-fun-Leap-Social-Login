@@ -89,7 +89,12 @@ export default function SLBiometricVerification({
           </div>
           <div style={{margin: '20px'}} className='text-md font-bold text-black-100 dark:text-white-100'>
             Waiting for passkey Authentication...
-            <div className="overflow-hidden rounded-[30px]">
+            <div style={
+              {
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center'
+            }} className="overflow-hidden rounded-[30px]">
                 <LoaderAnimation color={"#FFFFFF"} />
             </div>
           </div>
@@ -103,15 +108,6 @@ export default function SLBiometricVerification({
               );
             }}
           >
-            <div className="overflow-hidden rounded-[30px]">
-              {shortLoginLink && (
-                <QRCode
-                  data={shortLoginLink ?? ""}
-                  height={Math.min(350, window?.innerWidth ?? 350)}
-                  width={Math.min(350, window?.innerWidth ?? 350)}
-                />
-              )}
-            </div>
           </div>
         </div>
       )}
