@@ -12,7 +12,7 @@ import QRCodeStyling, {
 } from "qr-code-styling";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 
-import { Images } from "../../../../capsule-signup/images";
+import { Images } from "../../images";
 
 
 const fQRCodeStyling = async (options: Options): Promise<QRCodeStyling | null> => {
