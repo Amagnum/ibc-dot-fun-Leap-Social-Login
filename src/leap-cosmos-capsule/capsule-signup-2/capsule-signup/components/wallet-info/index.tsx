@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import {
-  Button,
   ChakraProvider,
   extendTheme,
   Modal,
@@ -15,6 +14,9 @@ import { InformationCircleIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import React, { useState } from "react";
 
 import QRCode from "@/leap-cosmos-capsule/capsule-signup-2/capsule-signup/components/qr-code/qr-code";
+import PoweredBy from "../powered";
+import CopySVG from "../Icon/Copy.svg";
+import Image from "next/image";
 
 export type WalletInfoModalProps = {
   address: string;
@@ -55,7 +57,7 @@ export default function WalletInfoModalView({ address }: WalletInfoModalProps) {
                 <div className="flex w-full flex-row items-center justify-between">
                   <div className="flex flex-row text-center gap-x-2">
                     <div className="text-md font-bold text-black">
-                      Your Wallet:
+                      Your Wallet
                     </div>
                   </div>
                   <div className="flex flex-row text-center items-center">
@@ -74,20 +76,51 @@ export default function WalletInfoModalView({ address }: WalletInfoModalProps) {
                     flexGrow: 1,
                     borderTopWidth: "1px",
                     borderColor: "#E5E7EB",
-                    width: "100%",
+                    width: "100%"
                   }}
                 />
-                <span>
-                  {address ?? ""}
-                </span>
-                <Button onClick={onCopy}>
-                  {hasCopied ? "Copied!" : "Copy address"}
-                </Button>
                 <QRCode
                   data={address ?? ""}
                   height={Math.min(350, window?.innerWidth ?? 350)}
                   width={Math.min(350, window?.innerWidth ?? 350)}
                 />
+                <div style={{ backgroundColor: "#E8E8E8", padding: '10px',justifyContent: "space-between", width: "100%", height: '40px' }} className="flex p-5 font-thin " >
+                  <div style={{ fontSize: '12px'}}>
+                    {address ?? ""}
+                  </div>
+                  <div onClick={onCopy} className="pl-5" style={{ fontSize: '12px'}}>
+                    {
+                      hasCopied ? 'Copied' : <Image alt="copy" src={CopySVG} />
+                    }
+                  </div>
+                </div>
+                
+                <button
+                    style={ 
+                      {
+                      display: "flex",
+                      bottom: "0",
+                      margin: "10px",
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: "1.5rem",
+                      borderStyle: "none",
+                      height: "3rem",
+                      fontSize: "16px",
+                      lineHeight: "1.25rem",
+                      color: "#FFF",
+                      fontWeight: 700,
+                      backgroundColor: "#059669",
+                      cursor: "pointer",
+                      width: "100%",
+                    }}
+                    onClick={()=>setShowWalletInfo(false)}
+                  >
+                    Done
+                  </button>
+
+                <PoweredBy />
               </VStack>
             </ModalBody>
           </ModalContent>
