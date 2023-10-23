@@ -9,6 +9,7 @@ const PoweredBy = () => {
         fontSize: '16px',
         fontWeight: 500,
         lineHeight: '16px',
+        display: 'flex'
     }} > Powered by 
     <Image 
         style={{
