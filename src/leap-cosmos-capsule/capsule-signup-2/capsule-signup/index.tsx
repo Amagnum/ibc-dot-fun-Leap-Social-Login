@@ -9,12 +9,12 @@ import {
   ModalOverlay,
   VStack,
 } from "@chakra-ui/react";
-import { CheckBadgeIcon } from "@heroicons/react/20/solid";
 import Capsule from "@usecapsule/web-sdk";
 import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import { LoaderWhiteAnimation } from "./components/loader/LoaderWhite";
 
+import PoweredBy from './components/powered';
 import SLAccountCreationDone from "./components/SL-account-creation-done";
 import SLBiometricVerification from "./components/SL-biometric-verification";
 import SLCreatingNewWallet from "./components/SL-creating-new-wallet";
@@ -22,6 +22,8 @@ import SLEmailVerification from "./components/SL-email-verification";
 import SLHeader from "./components/SL-header";
 import { ModalStep } from "./constant";
 import useCapsule from "./hooks/useCapsule";
+import Image from "next/image";
+import SuccessTick from './components/Icon/Right.svg';
 
 export type CapsuleModalProps = {
   capsule: Capsule;
@@ -135,7 +137,6 @@ export default function CustomCapsuleModalView({
           backgroundColor={"brand.background"}
           borderRadius={"3xl"}
         >
-          {/* <div className="relative z-[3]"> */}
           <ModalBody>
             <VStack>
               <div className="mt-1" />
@@ -163,8 +164,9 @@ export default function CustomCapsuleModalView({
               {(currentStep === ModalStep.LOGIN_DONE ||
                 currentStep === ModalStep.ACCOUNT_CREATION_DONE) && (
                 <div className="m-6 flex flex-row items-center justify-center">
-                  <CheckBadgeIcon
-                    style={{ height: "50%", width: "50%", color: "#059669" }}
+                  <Image
+                    alt="success"
+                    src={ SuccessTick }
                   />
                 </div>
               )}
@@ -212,37 +214,37 @@ export default function CustomCapsuleModalView({
                       loading ? {
                         display: "flex",
                         bottom: "0",
-                        margin: "1.5rem",
+                        margin: "10px",
                         flexDirection: "row",
                         justifyContent: "center",
                         alignItems: "center",
                         borderRadius: "1.5rem",
                         borderStyle: "none",
                         height: "3rem",
-                        fontSize: "0.875rem",
+                        fontSize: "16px",
                         lineHeight: "1.25rem",
                         color: "#FFF",
                         fontWeight: 700,
                         backgroundColor: "#05966980",
-                        width: "90%",
+                        width: "100%",
                       } : 
                       {
                       display: "flex",
                       bottom: "0",
-                      margin: "1.5rem",
+                      margin: "10px",
                       flexDirection: "row",
                       justifyContent: "center",
                       alignItems: "center",
                       borderRadius: "1.5rem",
                       borderStyle: "none",
                       height: "3rem",
-                      fontSize: "0.875rem",
+                      fontSize: "16px",
                       lineHeight: "1.25rem",
                       color: "#FFF",
                       fontWeight: 700,
                       backgroundColor: "#059669",
                       cursor: "pointer",
-                      width: "90%",
+                      width: "100%",
                     }}
                     className={classNames(
                       "bottom-0 m-6 flex h-12 w-[calc(100%-50px)] cursor-pointer flex-row items-center justify-center rounded-3xl border-none bg-green-600 text-sm font-bold text-white-100 lg:!text-md",
@@ -252,13 +254,13 @@ export default function CustomCapsuleModalView({
                     disabled={loading}
                   >
                     {
-                      loading ? <LoaderWhiteAnimation color="white"/> : 'Continue'
+                      loading ? <LoaderWhiteAnimation color="white"/> :  currentStep === ModalStep.ACCOUNT_CREATION_DONE ? 'Continue to App' : 'Continue'
                     }
                   </button>
                 )}
+              <PoweredBy />
             </VStack>
           </ModalBody>
-          {/* </div> */}
         </ModalContent>
       </Modal>
     </ChakraProvider>

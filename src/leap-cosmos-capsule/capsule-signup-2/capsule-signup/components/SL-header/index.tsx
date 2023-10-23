@@ -26,14 +26,8 @@ export default function SLHeader({
               />
             </button>
           )}
-          {/* <div className="text-md font-bold text-black">
-            Do you have a wallet?
-          </div> */}
         </div>
         <div className="flex flex-row text-center items-center">
-          {/* <div className="text-xs font-bold text-gray-400 mr-3">
-            powered by capsule{" "}
-          </div> */}
           <button
             onClick={onClose}
             className="text-xs text-gray-400 cursor-pointer px-2 ml-2"

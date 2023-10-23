@@ -38,15 +38,17 @@ export default function SLEmailVerification({
         </div>
         <div
           style={{
-            backgroundColor: "rgb(245, 245, 245)",
+            backgroundColor: "#E8E8E8",
             marginTop: 5,
+            borderRadius: '8px',
+            padding: '16px'
           }}
-          className="p-4  flex w-full flex-row items-center justify-start gap-1 rounded-3xl bg-gray-900"
+          className="p-4  flex w-full flex-row items-center justify-start gap-1 bg-gray-900"
         >
           <input
             value={emailInput}
             style={{
-              backgroundColor: "rgb(245, 245, 245)",
+              backgroundColor: "#E8E8E8",
             }}
             placeholder="Enter your email"
             onChange={(e) => setEmailInput(e.target.value)}
@@ -62,14 +64,16 @@ export default function SLEmailVerification({
           </div>
           <div
             style={{
-              backgroundColor: "rgb(245, 245, 245)",
+              backgroundColor: "#E8E8E8",
               marginTop: 5,
+              borderRadius: '8px',
+              padding: '16px'
             }}
             className="p-4 flex w-full flex-row items-center justify-start gap-1 rounded-3xl bg-gray-900"
           >
             <input
               style={{
-                backgroundColor: "rgb(245, 245, 245)",
+                backgroundColor: "#E8E8E8",
               }}
               value={otpInput}
               placeholder="_ _ _ _ _ _"
