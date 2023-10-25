@@ -30,7 +30,7 @@ export default function SLHeader({
         <div className="flex flex-row text-center items-center">
           <button
             onClick={onClose}
-            className="text-xs text-gray-400 cursor-pointer px-2 ml-2"
+            className="text-xs text-gray-400 cursor-pointer"
           >
             <XMarkIcon className="w-6 h-6 cursor-pointer" />
           </button>

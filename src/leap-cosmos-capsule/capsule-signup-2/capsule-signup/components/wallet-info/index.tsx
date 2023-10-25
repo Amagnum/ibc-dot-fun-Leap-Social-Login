@@ -84,11 +84,11 @@ export default function WalletInfoModalView({ address }: WalletInfoModalProps) {
                   height={Math.min(350, window?.innerWidth ?? 350)}
                   width={Math.min(350, window?.innerWidth ?? 350)}
                 />
-                <div style={{ backgroundColor: "#E8E8E8", padding: '10px',justifyContent: "space-between", width: "100%", height: '40px' }} className="flex p-5 font-thin " >
+                <div style={{ backgroundColor: "#E8E8E8", padding: '10px',justifyContent: "space-between", width: "100%", height: '40px', borderRadius: '8px' }} className="flex p-5 font-thin " >
                   <div style={{ fontSize: '12px'}}>
                     {address ?? ""}
                   </div>
-                  <div onClick={onCopy} className="pl-5" style={{ fontSize: '12px'}}>
+                  <div onClick={onCopy} className="pl-5" style={{ fontSize: '12px', cursor: 'pointer'}}>
                     {
                       hasCopied ? 'Copied' : <Image alt="copy" src={CopySVG} />
                     }

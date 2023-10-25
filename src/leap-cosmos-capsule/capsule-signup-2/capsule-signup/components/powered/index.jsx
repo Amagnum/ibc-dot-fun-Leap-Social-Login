@@ -14,7 +14,8 @@ const PoweredBy = () => {
     <Image 
         style={{
             marginLeft: '10px',
-            marginBottom: '10px'
+            marginBottom: '10px',
+            marginRight: '10px'
         }} 
         alt="capsule" 
         src={CapsuleSVG} 

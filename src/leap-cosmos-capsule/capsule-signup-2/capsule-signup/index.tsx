@@ -118,6 +118,12 @@ export default function CustomCapsuleModalView({
     }
   }, [currentStep]);
 
+  console.log({currentStep});
+
+  if(currentStep === ModalStep.LOGIN_DONE) {
+    return;
+  }
+
   return (
     <ChakraProvider theme={newTheme} cssVarsRoot={undefined}>
       <Modal
@@ -152,17 +158,9 @@ export default function CustomCapsuleModalView({
                   }
                 }}
               />
-              <div
-                style={{
-                  flexGrow: 1,
-                  borderTopWidth: "1px",
-                  borderColor: "#E5E7EB",
-                  width: "100%",
-                }}
-              />
 
-              {(currentStep === ModalStep.LOGIN_DONE ||
-                currentStep === ModalStep.ACCOUNT_CREATION_DONE) && (
+              {
+                currentStep === ModalStep.ACCOUNT_CREATION_DONE && (
                 <div className="m-6 flex flex-row items-center justify-center">
                   <Image
                     alt="success"

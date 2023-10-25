@@ -1,6 +1,8 @@
 import React from "react";
-
+import {  useClipboard, useToast } from "@chakra-ui/react";
 import { ModalStep } from "../../constant";
+import CopySVG from "../Icon/Copy.svg";
+import Image from "next/image";
 
 export default function SLAccountCreationDone({
   currentStep,
@@ -9,6 +11,8 @@ export default function SLAccountCreationDone({
   currentStep: ModalStep;
   recoveryShare?: string;
 }) {
+  const { onCopy } = useClipboard(recoveryShare || '');
+  const toast = useToast();
   const handleDownload = () => {
     if (!recoveryShare) return;
     const element = document.createElement("a");
@@ -22,6 +26,7 @@ export default function SLAccountCreationDone({
   if (currentStep !== ModalStep.ACCOUNT_CREATION_DONE) {
     return null;
   }
+  
 
   return (
     <>
@@ -35,11 +40,8 @@ export default function SLAccountCreationDone({
           }} >
             Your account is now ready
         </div>
-        <div style={{ marginTop: '20px'}} className="flex-1 gap-2 text-left w-full mt-20 font-bold">
-          Save Your Recovery Share
-        </div>
         <div style={{ color: '#858585', marginTop: '5px'}} className="flex-1 gap-2 text-left w-full font-thin text-sm">
-          Save this recovery share in a secure place to access your account with multiples devices and for recovery.        
+          {`Keep this recovery key safe! It's your backup to retrieve your account if you ever lose access to this device.`}
         </div>
         <div
           className="text-xs font-light"
@@ -48,15 +50,26 @@ export default function SLAccountCreationDone({
             display: "flex",
             overflow: "auto",
             padding: "1em",
-            flexDirection: "row",
-            flexWrap: "wrap",
             textOverflow: "ellipsis",
             wordBreak: "break-all",
             background: '#E8E8E8',
             borderRadius: '8px'
           }}
         >
-          {recoveryShare ?? ""}
+          <div>
+            {recoveryShare ?? ""}
+          </div>
+          <div onClick={() => { 
+              onCopy(); 
+              toast({
+                duration: 5000,
+                title: "Copied",
+              }); 
+            }} 
+            className="pl-5" style={{ fontSize: '12px', width: '60px', paddingLeft: '10px', alignSelf: 'center', cursor: 'pointer'}}
+          >
+              <Image alt="copy" src={CopySVG} />
+          </div>
         </div>
         <button
           style={{
