@@ -121,7 +121,7 @@ export default function CustomCapsuleModalView({
   console.log({currentStep});
 
   if(currentStep === ModalStep.LOGIN_DONE) {
-    return;
+    return <></>;
   }
 
   return (
