@@ -16,6 +16,7 @@ export default function useCapsule(
   const [emailInput, setEmailInput] = useState(capsule?.getEmail() ?? "");
   const [otpInput, setOtpInput] = useState("");
   const [error, setError] = useState("");
+  let interval:ReturnType<typeof setInterval>;
 
   const [createWalletRes, setCreateWalletRes] =
     useState<[Wallet, string | null]>();
@@ -308,14 +309,23 @@ export default function useCapsule(
   const [isResendButtonDisabled, setResendButtonDisabled] = useState(false);
 
   const resendVerificationCode = async () => {
-    setResendStatus("Code Resent!");
+    let timer = 30;
+    clearInterval(interval);
+    setResendStatus(`Resend again in ${timer}s`);
+    interval = setInterval(() => {
+      timer = timer - 1;
+      setResendStatus(() => { return `Resend again in ${timer}s` })
+      if(timer === 0) {
+        clearInterval(interval);
+      }
+    }, 1000)
     setResendButtonDisabled(true);
     await capsule.resendVerificationCode();
 
     setTimeout(() => {
       setResendStatus("Resend Code");
       setResendButtonDisabled(false);
-    }, 3000);
+    }, 30000);
   };
 
   const verifyCode = async () => {
