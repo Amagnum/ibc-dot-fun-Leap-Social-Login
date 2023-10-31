@@ -197,8 +197,9 @@ export default function CustomCapsuleModalView({
               { error && <div
                 style={{
                   marginBottom: "1.5rem",
-                  fontWeight: 700,
+                  fontWeight: 500,
                   color: "#DC2626",
+                  textAlign: "center"
                 }}
               >
                 {error}

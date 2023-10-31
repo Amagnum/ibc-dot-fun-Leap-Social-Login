@@ -87,6 +87,7 @@ export default function SLEmailVerification({
           <button
             disabled={isResendButtonDisabled}
             onClick={resendCode}
+            style={isResendButtonDisabled ? { opacity: '30%' }: {}}
             className={classNames(
               "m-2 mb-3 flex justify-end text-right text-sm text-black-100 dark:text-white-100",
               {

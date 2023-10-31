@@ -311,10 +311,10 @@ export default function useCapsule(
   const resendVerificationCode = async () => {
     let timer = 30;
     clearInterval(interval);
-    setResendStatus(`Resend again in ${timer}s`);
+    setResendStatus(`Can resend again in ${timer}s`);
     interval = setInterval(() => {
       timer = timer - 1;
-      setResendStatus(() => { return `Resend again in ${timer}s` })
+      setResendStatus(() => { return `Canesend again in ${timer}s` })
       if(timer === 0) {
         clearInterval(interval);
       }
@@ -338,13 +338,13 @@ export default function useCapsule(
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         //@ts-ignore
         if (e.message.includes("429")) {
-          setError("Too many attempts");
+          setError("Too many login attempts, kindly try again after 10mins.");
         } else {
-          setError("Incorrect Code");
+          setError("Incorrect Code, Kindly re-check the code sent to your email.");
         }
       }
     } else {
-      setError("Incorrect Code");
+      setError("Incorrect Code, Kindly re-check the code sent to your email.");
     }
   };
 
