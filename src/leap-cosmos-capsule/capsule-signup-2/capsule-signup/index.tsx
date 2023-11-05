@@ -63,7 +63,6 @@ export default function CustomCapsuleModalView({
 
   const disableContinue = false;
 
-  console.log(percentKeygenDone);
   const [loading, setLoading] = useState(false);
 
   const onButtonClick = async () => {
@@ -84,7 +83,6 @@ export default function CustomCapsuleModalView({
       case ModalStep.LOGIN_DONE:
         onReset();
         setLoading(false)
-        location.reload();
         break;
       default:
         setLoading(false)
@@ -94,7 +92,6 @@ export default function CustomCapsuleModalView({
 
   // initialize wallet in leap repo
   useEffect(() => {
-    console.log(currentStep, capsule);
     setError("");
     setLoading(false)
     if (currentStep === ModalStep.LOGIN_DONE) {
@@ -117,8 +114,6 @@ export default function CustomCapsuleModalView({
       }
     }
   }, [currentStep]);
-
-  console.log({currentStep});
 
   if(currentStep === ModalStep.LOGIN_DONE) {
     return <></>;

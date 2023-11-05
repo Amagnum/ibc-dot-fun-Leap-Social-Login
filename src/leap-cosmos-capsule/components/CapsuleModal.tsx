@@ -4,11 +4,9 @@ import { CapsuleModal } from '@usecapsule/web-sdk/dist/modal/CapsuleModal'
 import React, { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 
-import { showCapsuleModelState } from '../atoms'
 import { newTheme } from './theme'
 
-export default function CapsuleModalView({capsule}:{capsule: Capsule}) {
-  const [showCapsuleModal, setShowCapsuleModal] = useRecoilState(showCapsuleModelState)
+export default function CapsuleModalView({capsule, showCapsuleModal, setShowCapsuleModal}:{capsule: Capsule, showCapsuleModal: boolean, setShowCapsuleModal: Function}) {
 
   useEffect(()=>{
     const fn = async()=>{
@@ -28,7 +26,6 @@ export default function CapsuleModalView({capsule}:{capsule: Capsule}) {
       onClose={function (): void {
         if(Object.values(capsule?.getWallets()).length>0){
             setShowCapsuleModal(false)
-            location.reload();
         }
       }}
       appName={'LEAP_WALLET'}

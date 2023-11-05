@@ -3,7 +3,6 @@ import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { FC } from "react";
 import { useRecoilState } from "recoil";
 import { DialogContent } from "@/elements/Dialog";
-import { showCapsuleModelState } from "@/leap-cosmos-capsule/atoms";
 import { getChainByID } from "@/utils/utils";
 
 import { useWalletModal } from "./context";
@@ -25,12 +24,9 @@ interface Props {
 }
 
 export const WalletModal: FC<Props> = ({ onClose, wallets }) => {
-  const [getter, setter] = useRecoilState(showCapsuleModelState)
   async function onWalletConnect(wallet: MinimalWallet) {
-    await wallet.connect();
-    setter(true);
-    console.log(getter)
     onClose();
+    await wallet.connect();
   }
 
   return (

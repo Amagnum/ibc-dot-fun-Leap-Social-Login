@@ -6,29 +6,15 @@ import { ChainCosmosSnap } from "./chain-wallet";
 import { CosmosCapsuleClient } from "./client";
 
 export class CosmosCapsuleWallet extends MainWalletBase {
-  public capsuleClient: Capsule | undefined;
-  constructor(walletInfo: Wallet) {
+  public capsuleClient: Capsule;
+  constructor({walletInfo, capsule}: { walletInfo: Wallet, capsule: Capsule } ) {
     super(walletInfo, ChainCosmosSnap);
+    this.capsuleClient = capsule;
   }
 
   async initClient() {
     this.initingClient();
     try {
-      await import("@usecapsule/web-sdk").then((CapsuleModule) => {
-        const Capsule = CapsuleModule.default;
-        CapsuleModule.Environment;
-        const instance = new Capsule(
-          CapsuleModule.Environment.BETA,
-          undefined,
-          {
-            offloadMPCComputationURL:
-              "https://capsule.leapwallet.io/",
-          }
-        );
-        this.capsuleClient = instance; 
-      });
-      console.log(this.capsuleClient);
-      if (!this.capsuleClient) return;
       this.initClientDone(new CosmosCapsuleClient(this.capsuleClient));
     } catch (error) {
       this.logger?.error(error);

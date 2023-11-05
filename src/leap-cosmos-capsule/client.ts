@@ -7,29 +7,27 @@ import Capsule, { CapsuleAminoSigner } from "@usecapsule/web-sdk";
 import { cosmjsOfflineSigner } from "./cosmjs-offline-signer";
 import {
   chainIdtoAddressPrefix,
-  connectSnap,
+  connectCapsule,
   getKey,
   requestAminoSignature,
   requestSignature,
-} from "./snap";
+} from "./capsuleConnector";
 
 export class CosmosCapsuleClient implements WalletClient {
-  readonly snapInstalled: boolean = false;
+  readonly capsuleInstalled: boolean = false;
   readonly capsuleClinet;
 
   constructor(client: Capsule) {
-    this.snapInstalled = true;
+    this.capsuleInstalled = true;
     this.capsuleClinet = client;
   }
 
   async enable(chainIds: string | string[]) {
-    console.log(chainIds);
     return;
   }
 
   async disconnect() {
-    this.capsuleClinet.logout();
-    location.reload();
+    await this.capsuleClinet.logout();
   }
 
   async getSimpleAccount(chainId: string) {
@@ -44,7 +42,8 @@ export class CosmosCapsuleClient implements WalletClient {
 
   async handleConnect() {
     try {
-      await connectSnap(this.capsuleClinet);
+      console.log(this.capsuleClinet);
+      await connectCapsule(this.capsuleClinet);
     } catch (e) {
       console.error(e);
     }
@@ -52,7 +51,7 @@ export class CosmosCapsuleClient implements WalletClient {
 
   async connect() {
     try {
-      await connectSnap(this.capsuleClinet);
+      await connectCapsule(this.capsuleClinet);
     } catch (e) {
       console.error(e);
     }

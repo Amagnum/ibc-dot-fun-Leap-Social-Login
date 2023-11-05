@@ -3,7 +3,7 @@ import { DirectSignResponse, OfflineDirectSigner } from "@cosmjs/proto-signing";
 import { DirectSignDoc } from "@cosmos-kit/core";
 import Capsule from "@usecapsule/web-sdk";
 
-import { getKey, requestSignature } from "./snap";
+import { getKey, requestSignature } from "./capsuleConnector";
 
 export class cosmjsOfflineSigner implements OfflineDirectSigner {
   constructor(private chainId: string, private capsule: Capsule) {}

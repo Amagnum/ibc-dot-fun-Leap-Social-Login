@@ -1,4 +1,4 @@
-// implement snaps
+// implement capsules
 import { AccountData, StdSignDoc } from "@cosmjs/amino";
 import { DirectSignDoc } from "@cosmos-kit/core";
 import Capsule, {
@@ -119,9 +119,9 @@ export const chainIdtoAddressPrefix: Record<string, string> = {
 };
 
 /**
- * Get the installed snaps in MetaMask.
+ * Get the installed capsules in MetaMask.
  *
- * @returns The snaps installed in MetaMask.
+ * @returns The capsules installed in MetaMask.
  */
 
 declare global {
@@ -131,19 +131,23 @@ declare global {
 }
 
 /**
- * Connect a snap to MetaMask.
+ * Connect a capsule to MetaMask.
  *
- * @param snapId - The ID of the snap.
- * @param params - The params to pass with the snap to connect.
+ * @param capsuleId - The ID of the capsule.
+ * @param params - The params to pass with the capsule to connect.
  */
-export const connectSnap = async (capsule: Capsule) => {
-  const address = Object.values(capsule.getWallets())?.[0]?.address;
-  const isSessionActive = await capsule.isSessionActive();
-  if (isSessionActive && address) {
-    return true;
-  } else {
-    return true;
-  }
+export const connectCapsule = async (capsule: Capsule) => {
+  return new Promise(async (resolve, reject) => {
+    const address = Object.values(capsule.getWallets())?.[0]?.address;
+    const isSessionActive = await capsule.isSessionActive();
+    if (isSessionActive && address) {
+      return resolve(true);
+    }
+    window.successCapsuleModal = () => {
+      resolve(true); 
+    }
+    window.openCapsuleModal(capsule);
+  });
 };
 
 export const requestAminoSignature = async (
@@ -197,7 +201,6 @@ export const requestSignature = async (
     signed: signature.signed,
   };
 
-  console.log("logging modified signature", modifiedSignature);
   return modifiedSignature;
 };
 
@@ -205,13 +208,12 @@ export const getKey = async (
   capsule: Capsule,
   chainId: string
 ): Promise<AccountData> => {
+  console.log(capsule);
   const wallets = Object.values(capsule?.getWallets() ?? {});
 
   if(wallets.length<1){
     throw Error('Not possible');
   }
-
-  console.log(wallets, capsule);
 
   const walletSigner = new CapsuleProtoSigner(
     capsule,
@@ -225,4 +227,4 @@ export const getKey = async (
   return accountData as AccountData;
 };
 
-export const isLocalSnap = (snapId: string) => snapId.startsWith("local:");
+export const isLocalCapsule = (capsuleId: string) => capsuleId.startsWith("local:");
