@@ -272,10 +272,10 @@ export default function useCapsule(
         setIsFullyLoggedIn(true);
         setWebAuthURLForLogin("");
 
-        if (Object.values(capsule.getWallets()).length === 0) {
-          setCurrentStep(ModalStep.AWAITING_WALLET_CREATION_AFTER_LOGIN);
-          return;
-        }
+        // if (Object.values(capsule.getWallets()).length === 0) {
+        //   setCurrentStep(ModalStep.AWAITING_WALLET_CREATION_AFTER_LOGIN);
+        //   return;
+        // }
         setCurrentStep(ModalStep.LOGIN_DONE);
         return;
       }

@@ -25,7 +25,7 @@ import { AppProps } from "next/app";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { RecoilRoot, useRecoilState } from "recoil";
+import { RecoilRoot } from "recoil";
 
 import MainLayout from "@/components/MainLayout";
 import { AssetsProvider } from "@/context/assets";
@@ -184,7 +184,6 @@ export default function App({ Component, pageProps }: AppProps) {
   const [capsule, setCapsule] = useState<Capsule>();
 
   useEffect(() => {
-    const fn = async () => {
       if (!cosmosCapsuleWallet) {
         const WalletClass = await import(
           "@/leap-cosmos-capsule/main-wallet"

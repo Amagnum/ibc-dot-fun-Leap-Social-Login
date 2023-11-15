@@ -1,7 +1,6 @@
 import { useManager } from "@cosmos-kit/react";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { FC } from "react";
-import { useRecoilState } from "recoil";
 import { DialogContent } from "@/elements/Dialog";
 import { getChainByID } from "@/utils/utils";
 

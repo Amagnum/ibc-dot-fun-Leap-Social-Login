@@ -2,11 +2,18 @@
 import Capsule from '@usecapsule/web-sdk'
 import { CapsuleModal } from '@usecapsule/web-sdk/dist/modal/CapsuleModal'
 import React, { useEffect } from 'react'
-import { useRecoilState } from 'recoil'
 
 import { newTheme } from './theme'
 
-export default function CapsuleModalView({capsule, showCapsuleModal, setShowCapsuleModal}:{capsule: Capsule, showCapsuleModal: boolean, setShowCapsuleModal: Function}) {
+export default function CapsuleModalView({
+  capsule, 
+  showCapsuleModal, 
+  setShowCapsuleModal
+}:{
+  capsule: Capsule, 
+  showCapsuleModal: boolean, 
+  setShowCapsuleModal: (show: boolean) => void
+}) {
 
   useEffect(()=>{
     const fn = async()=>{

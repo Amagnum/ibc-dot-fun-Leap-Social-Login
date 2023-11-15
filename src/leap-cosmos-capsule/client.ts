@@ -22,7 +22,7 @@ export class CosmosCapsuleClient implements WalletClient {
     this.capsuleClinet = client;
   }
 
-  async enable(chainIds: string | string[]) {
+  async enable() {
     return;
   }
 
@@ -42,7 +42,6 @@ export class CosmosCapsuleClient implements WalletClient {
 
   async handleConnect() {
     try {
-      console.log(this.capsuleClinet);
       await connectCapsule(this.capsuleClinet);
     } catch (e) {
       console.error(e);

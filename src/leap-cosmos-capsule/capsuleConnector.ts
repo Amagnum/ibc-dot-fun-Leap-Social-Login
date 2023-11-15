@@ -137,16 +137,17 @@ declare global {
  * @param params - The params to pass with the capsule to connect.
  */
 export const connectCapsule = async (capsule: Capsule) => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve) => {
     const address = Object.values(capsule.getWallets())?.[0]?.address;
-    const isSessionActive = await capsule.isSessionActive();
-    if (isSessionActive && address) {
-      return resolve(true);
-    }
-    window.successCapsuleModal = () => {
-      resolve(true); 
-    }
-    window.openCapsuleModal(capsule);
+    capsule.isSessionActive().then((isSessionActive) => {
+      if (isSessionActive && address) {
+        return resolve(true);
+      }
+      window.successCapsuleModal = () => {
+        resolve(true); 
+      }
+      window.openCapsuleModal(capsule);
+    })    
   });
 };
 
