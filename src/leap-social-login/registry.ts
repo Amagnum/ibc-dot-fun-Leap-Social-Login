@@ -2,8 +2,8 @@ import { Wallet } from '@cosmos-kit/core'
 
 export const LeapCapsuleInfo: Wallet = {
   name: 'leap-cosmos-capsule',
-  prettyName: 'Connect with Google',
-  logo: 'https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg',
+  prettyName: 'Sign In with Email',
+  logo: 'https://leap-wallet-assets.s3.amazonaws.com/social-login/email.svg',
   mode: 'extension',
   mobileDisabled: false,
   rejectMessage: {

@@ -18,7 +18,6 @@ import { wallets as metamaskWallets } from "@cosmos-kit/leap-metamask-cosmos-sna
 import { ChainProvider } from "@cosmos-kit/react";
 import * as RadixToast from "@radix-ui/react-toast";
 import { QueryClientProvider } from "@tanstack/react-query";
-import Capsule from "@usecapsule/web-sdk";
 import { Analytics } from "@vercel/analytics/react";
 import { assets, chains } from "chain-registry";
 import { AppProps } from "next/app";
@@ -31,9 +30,9 @@ import MainLayout from "@/components/MainLayout";
 import { AssetsProvider } from "@/context/assets";
 import { ChainsProvider } from "@/context/chains";
 import { ToastProvider } from "@/context/toast";
-import { CosmosCapsuleWallet } from "@/leap-cosmos-capsule";
 import { SkipProvider } from "@/solve";
 import { queryClient } from "@/utils/query";
+import { CosmosCapsuleWallet } from "@/leap-social-login/main-wallet";
 
 export default function App({ Component, pageProps }: AppProps) {
   chains.push({
@@ -181,33 +180,16 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const [cosmosCapsuleWallet, setCosmosCapsuleWallet] =
     useState<CosmosCapsuleWallet>();
-  const [capsule, setCapsule] = useState<Capsule>();
-
   useEffect(() => {
+    const fn = async () => {
       if (!cosmosCapsuleWallet) {
         const WalletClass = await import(
-          "@/leap-cosmos-capsule/main-wallet"
+          "@/leap-social-login/main-wallet"
         ).then((m) => m.CosmosCapsuleWallet);
-        const WalletInfo = await import("@/leap-cosmos-capsule/registry").then(
+        const WalletInfo = await import("@/leap-social-login/registry").then(
           (m) => m.LeapCapsuleInfo,
         );
-        const _capsule = await import("@usecapsule/web-sdk").then(
-          (CapsuleModule) => {
-            const Capsule = CapsuleModule.default;
-            CapsuleModule.Environment;
-            const instance = new Capsule(
-              CapsuleModule.Environment.BETA,
-              undefined,
-              {
-                offloadMPCComputationURL: "https://capsule.leapwallet.io/",
-              },
-            );
-            return instance;
-          },
-        );
-        const cosmosCapsuleWallet = new WalletClass({walletInfo: WalletInfo, capsule: _capsule});
-
-        setCapsule(_capsule);
+        const cosmosCapsuleWallet = new WalletClass({walletInfo: WalletInfo });
         setCosmosCapsuleWallet(cosmosCapsuleWallet);
       }
     };
@@ -262,8 +244,8 @@ export default function App({ Component, pageProps }: AppProps) {
                           <MainLayout>
                             <Component {...pageProps} />
                           </MainLayout>
-                          {!!capsule && (
-                            <CustomCapsuleModalViewX capsule={capsule} />
+                          {!!cosmosCapsuleWallet && (
+                            <CustomCapsuleModalViewX/>
                           )}
                         </ToastProvider>
                         <RadixToast.Viewport className="w-[390px] max-w-[100vw] flex flex-col gap-2 p-6 fixed bottom-0 right-0 z-[999999]" />
@@ -283,13 +265,13 @@ export default function App({ Component, pageProps }: AppProps) {
 
 const CCUI = dynamic(
   () =>
-    import("@/leap-cosmos-capsule/capsule-signup-2/capsule-signup").then(
+    import("@leapwallet/cosmos-social-login-capsule-provider-ui").then(
       (m) => m.default,
     ),
   { ssr: false },
 );
 
-export function CustomCapsuleModalViewX({ capsule }: { capsule: Capsule }) {
+export function CustomCapsuleModalViewX() {
   const [showCapsuleModal, setShowCapsuleModal] = useState(false);
 
   window.openCapsuleModal = () => {
@@ -299,12 +281,17 @@ export function CustomCapsuleModalViewX({ capsule }: { capsule: Capsule }) {
   return (
     <>
       <CCUI
-        capsule={capsule}
         showCapsuleModal={showCapsuleModal}
         setShowCapsuleModal={setShowCapsuleModal}
+        theme={'light'}
         onAfterLoginSuccessful={() => {
-          window.successCapsuleModal();
+          window.successFromCapsuleModal();
         }}
+        onLoginFailure = {
+          () => {
+            window.failureFromCapsuleModal();
+          }
+        }
       />
     </>
   );

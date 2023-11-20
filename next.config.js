@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-const withTM = require('next-transpile-modules')(['@usecapsule/web-sdk', '@usecapsule/user-management-client']);
+const withTM = require('next-transpile-modules')(['@leapwallet/cosmos-social-login-capsule-provider-ui', '@leapwallet/cosmos-social-login-capsule-provider']);
 
 const nextConfig = {
   productionBrowserSourceMaps: true,
