@@ -3,7 +3,7 @@ import { Wallet } from '@cosmos-kit/core'
 export const LeapCapsuleInfo: Wallet = {
   name: 'leap-cosmos-capsule',
   prettyName: 'Sign In with Email',
-  logo: 'https://leap-wallet-assets.s3.amazonaws.com/social-login/email.svg',
+  logo: 'https://leap-wallet-assets.s3.amazonaws.com/social-login/mail.svg',
   mode: 'extension',
   mobileDisabled: false,
   rejectMessage: {

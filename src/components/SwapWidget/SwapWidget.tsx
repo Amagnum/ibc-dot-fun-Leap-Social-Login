@@ -11,14 +11,7 @@ import { ConnectWalletButtonSmall } from "../ConnectWalletButtonSmall";
 import TransactionDialog from "../TransactionDialog";
 import { useWalletModal, WalletModal } from "../WalletModal";
 import { useSwapWidget } from "./useSwapWidget";
-
-// const WalletInfo = dynamic(
-//   () =>
-//     import(
-//       "@/leap-cosmos-capsule/capsule-signup-2/capsule-signup/components/wallet-info"
-//     ).then((m) => m.default),
-//   { ssr: false },
-// );
+import WalletInfoModalView from "../WalletInfo";
 
 const RouteLoading = () => (
   <div className="bg-black text-white/50 font-medium uppercase text-xs p-3 rounded-md flex items-center w-full text-left">
@@ -92,7 +85,6 @@ export const SwapWidget: FC = () => {
     wallet,
   } = useChain(sourceChain?.record?.chain.chain_name ?? "cosmoshub");
 
-  console.log(address, wallet, walletConnectStatus);
   return (
     <Fragment>
       <div>
@@ -103,7 +95,7 @@ export const SwapWidget: FC = () => {
             wallet &&
             walletConnectStatus === WalletStatus.Connected ? (
               <div className="flex flex-row gap-2">
-                {/* <WalletInfo address={address} /> */}
+                <WalletInfoModalView address={address} />
                 <ConnectedWalletButton
                   address={address}
                   onClick={openWalletModal}
