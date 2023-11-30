@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import "../styles/globals.css";
 import "@interchain-ui/react/styles";
+import "@leapwallet/embedded-wallet-sdk-react/styles.css"
 
 if (typeof global.self === "undefined") {
   (global as any).self = global;

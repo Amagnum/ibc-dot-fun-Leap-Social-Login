@@ -1,7 +1,8 @@
 import { WalletStatus } from "@cosmos-kit/core";
 import { useChain } from "@cosmos-kit/react";
 import { ArrowsUpDownIcon } from "@heroicons/react/20/solid";
-import { FC, Fragment } from "react";
+import { FC, Fragment, useState } from "react";
+import { useRef, useEffect } from 'react'
 
 import { useChains } from "@/context/chains";
 
@@ -11,7 +12,9 @@ import { ConnectWalletButtonSmall } from "../ConnectWalletButtonSmall";
 import TransactionDialog from "../TransactionDialog";
 import { useWalletModal, WalletModal } from "../WalletModal";
 import { useSwapWidget } from "./useSwapWidget";
-import WalletInfoModalView from "../WalletInfo";
+import { AccountModal, defaultBlurs, defaultBorderRadii } from "@leapwallet/embedded-wallet-sdk-react";
+import { InformationCircleIcon } from "@heroicons/react/20/solid";
+
 
 const RouteLoading = () => (
   <div className="bg-black text-white/50 font-medium uppercase text-xs p-3 rounded-md flex items-center w-full text-left">
@@ -83,7 +86,53 @@ export const SwapWidget: FC = () => {
     status: walletConnectStatus,
     address,
     wallet,
+    chain,
   } = useChain(sourceChain?.record?.chain.chain_name ?? "cosmoshub");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const restURL = chain?.apis?.rest?[0] && chain?.apis?.rest[0].address : '' ;
+  const chainId = chain?.chain_id || 'comosHub';
+  const ClientAccountModal = () => {
+      const ref = useRef()
+      const [mounted, setMounted] = useState(false)
+
+      useEffect(() => {
+        ref.current = document.querySelector("body") as unknown as undefined;
+        console.log(document.querySelector("body"))
+        setMounted(true)
+      }, [])
+
+      const theme = {
+        colors: {
+          primary: "#fc480a00",
+          border: "#E8E8E8",
+          stepBorder: "#E8E8E8",
+          backgroundPrimary: "#ffffff",
+          backgroundSecondary: "#F4F4F4",
+          text: "#000000",
+          textSecondary: "#858585",
+          gray: "#9ca3af",
+          alpha: "#ffffff",
+          error: "#420006",
+          errorBackground: "#FFEBED",
+          success: "#29A874",
+          successBackground: "#DAF6EB",
+        },
+        borderRadii: defaultBorderRadii,
+        blurs: defaultBlurs,
+        fontFamily: "inherit",
+      };
+
+
+      return (mounted && isModalOpen) ? 
+                    <AccountModal
+                      theme={theme}
+                      chainId={chainId}
+                      restUrl={restURL}
+                      address={address || ''}
+                      isOpen={isModalOpen}
+                      onClose={()=>{ setIsModalOpen(false) }}
+                    /> : null
+}
 
   return (
     <Fragment>
@@ -91,11 +140,18 @@ export const SwapWidget: FC = () => {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <p className="font-semibold text-2xl">From</p>
+            <ClientAccountModal />
             {address &&
             wallet &&
             walletConnectStatus === WalletStatus.Connected ? (
               <div className="flex flex-row gap-2">
-                <WalletInfoModalView address={address} />
+                <button
+                  onClick={() => {
+                    setIsModalOpen(true);
+                  }}
+                >
+                  <InformationCircleIcon className="w-6 h-6" />
+                </button>
                 <ConnectedWalletButton
                   address={address}
                   onClick={openWalletModal}
