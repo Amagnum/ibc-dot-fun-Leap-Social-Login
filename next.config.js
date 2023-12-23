@@ -15,6 +15,10 @@ const nextConfig = {
         source: "/nodes/:chainID/:path*",
         destination: "/api/proxy",
       },
+      {
+        source: "/api/nodes/:rest*",
+        destination: "https://ibc.fun/api/nodes/:rest*",
+      },
     ];
   },
   transpilePackages:
