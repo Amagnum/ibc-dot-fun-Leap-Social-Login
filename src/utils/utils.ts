@@ -82,7 +82,7 @@ export async function getStargateClientForChainID(chainID: string) {
     throw new Error(`Chain with ID ${chainID} not found`);
   }
 
-  const preferredEndpoint = `https://ibc.fun/nodes/${chainID}`;
+  const preferredEndpoint = `https://ibc.fun/api/nodes/${chainID}`;
 
   try {
     const client = await StargateClient.connect(preferredEndpoint, {});
@@ -121,7 +121,7 @@ export async function getSigningStargateClientForChainID(
     throw new Error(`Chain with ID ${chainID} not found`);
   }
 
-  const preferredEndpoint = `https://ibc.fun/nodes/${chainID}`;
+  const preferredEndpoint = `https://ibc.fun/api/nodes/${chainID}`;
 
   try {
     const client = await SigningStargateClient.connectWithSigner(
@@ -182,7 +182,7 @@ export async function getSigningCosmWasmClientForChainID(
     throw new Error(`Chain with ID ${chainID} not found`);
   }
 
-  const preferredEndpoint = `https://ibc.fun/nodes/${chainID}`;
+  const preferredEndpoint = `https://ibc.fun/api/nodes/${chainID}`;
   try {
     const client = await SigningCosmWasmClient.connectWithSigner(
       preferredEndpoint,
