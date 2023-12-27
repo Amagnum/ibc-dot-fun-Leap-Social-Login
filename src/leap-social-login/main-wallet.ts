@@ -3,7 +3,6 @@ import { MainWalletBase } from "@cosmos-kit/core";
 
 import { ChainCosmosSocial } from "./chain-wallet";
 import { CosmosCapsuleClient } from "./client";
-import { CapsuleEnvironment } from "@leapwallet/cosmos-social-login-capsule-provider";
 
 export class CosmosCapsuleWallet extends MainWalletBase {
   constructor({walletInfo}: { walletInfo: Wallet  } ) {
@@ -26,7 +25,7 @@ export class CosmosCapsuleWallet extends MainWalletBase {
       },
     );
     try {
-      this.initClientDone(new CosmosCapsuleClient({ loginProvider: new CapsuleProvider({ apiKey: "6831766c031e8f70029411a93002d800", env: "PROD" as CapsuleEnvironment })  } ));
+      this.initClientDone(new CosmosCapsuleClient({ loginProvider: new CapsuleProvider({ apiKey: "6831766c031e8f70029411a93002d800", env: CapsuleEnvironment.PROD })  } ));
     } catch (error) {
       this.initClientError(error as Error);
     }
