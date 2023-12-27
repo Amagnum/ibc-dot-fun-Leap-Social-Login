@@ -1,7 +1,6 @@
 import { useManager } from "@cosmos-kit/react";
 import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { FC } from "react";
-
 import { DialogContent } from "@/elements/Dialog";
 import { getChainByID } from "@/utils/utils";
 
@@ -25,8 +24,8 @@ interface Props {
 
 export const WalletModal: FC<Props> = ({ onClose, wallets }) => {
   async function onWalletConnect(wallet: MinimalWallet) {
-    await wallet.connect();
     onClose();
+    await wallet.connect();
   }
 
   return (

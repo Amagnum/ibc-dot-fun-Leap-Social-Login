@@ -1,5 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import "../styles/globals.css";
 import "@interchain-ui/react/styles";
+import "@leapwallet/embedded-wallet-sdk-react/styles.css"
+
+if (typeof global.self === "undefined") {
+  (global as any).self = global;
+}
+
+if (typeof global.addEventListener === "undefined") {
+  global.addEventListener = () => {};
+  global.removeEventListener = () => {};
+}
 
 import { wallets as cosmostationWallets } from "@cosmos-kit/cosmostation-extension";
 import { wallets as keplrWallets } from "@cosmos-kit/keplr-extension";
@@ -11,7 +22,10 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Analytics } from "@vercel/analytics/react";
 import { assets, chains } from "chain-registry";
 import { AppProps } from "next/app";
+import dynamic from "next/dynamic";
 import Head from "next/head";
+import { useEffect, useState } from "react";
+import { RecoilRoot } from "recoil";
 
 import MainLayout from "@/components/MainLayout";
 import { AssetsProvider } from "@/context/assets";
@@ -19,6 +33,7 @@ import { ChainsProvider } from "@/context/chains";
 import { ToastProvider } from "@/context/toast";
 import { SkipProvider } from "@/solve";
 import { queryClient } from "@/utils/query";
+import { CosmosCapsuleWallet } from "@/leap-social-login/main-wallet";
 
 export default function App({ Component, pageProps }: AppProps) {
   chains.push({
@@ -164,12 +179,41 @@ export default function App({ Component, pageProps }: AppProps) {
     ],
   });
 
-  const wallets = [
+  const [cosmosCapsuleWallet, setCosmosCapsuleWallet] =
+    useState<CosmosCapsuleWallet>();
+  useEffect(() => {
+    const fn = async () => {
+      if (!cosmosCapsuleWallet) {
+        const WalletClass = await import(
+          "@/leap-social-login/main-wallet"
+        ).then((m) => m.CosmosCapsuleWallet);
+        const WalletInfo = await import("@/leap-social-login/registry").then(
+          (m) => m.LeapCapsuleInfo,
+        );
+        const cosmosCapsuleWallet = new WalletClass({walletInfo: WalletInfo });
+        setCosmosCapsuleWallet(cosmosCapsuleWallet);
+      }
+    };
+
+    fn();
+  });
+
+  let wallets = [
     ...keplrWallets,
     ...cosmostationWallets,
     ...leapWallets,
     ...metamaskWallets,
   ];
+
+  if (cosmosCapsuleWallet) {
+    wallets = [
+      ...keplrWallets,
+      ...cosmostationWallets,
+      ...leapWallets,
+      ...metamaskWallets,
+      cosmosCapsuleWallet,
+    ];
+  }
 
   return (
     <>
@@ -184,31 +228,74 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <main>
         <QueryClientProvider client={queryClient}>
-          <ChainProvider
-            chains={chains}
-            assetLists={assets}
-            wallets={wallets}
-            wrappedWithChakra
-            throwErrors={false}
-          >
-            <SkipProvider>
-              <ChainsProvider>
-                <AssetsProvider>
-                  <RadixToast.ToastProvider>
-                    <ToastProvider>
-                      <MainLayout>
-                        <Component {...pageProps} />
-                      </MainLayout>
-                    </ToastProvider>
-                    <RadixToast.Viewport className="w-[390px] max-w-[100vw] flex flex-col gap-2 p-6 fixed bottom-0 right-0 z-[999999]" />
-                  </RadixToast.ToastProvider>
-                </AssetsProvider>
-              </ChainsProvider>
-            </SkipProvider>
-          </ChainProvider>
+          <RecoilRoot>
+            {!!cosmosCapsuleWallet && (
+              <ChainProvider
+                chains={chains}
+                assetLists={assets}
+                wallets={wallets}
+                wrappedWithChakra
+                throwErrors={false}
+              >
+                <SkipProvider>
+                  <ChainsProvider>
+                    <AssetsProvider>
+                      <RadixToast.ToastProvider>
+                        <ToastProvider>
+                          <MainLayout>
+                            <Component {...pageProps} />
+                          </MainLayout>
+                          {!!cosmosCapsuleWallet && (
+                            <CustomCapsuleModalViewX/>
+                          )}
+                        </ToastProvider>
+                        <RadixToast.Viewport className="w-[390px] max-w-[100vw] flex flex-col gap-2 p-6 fixed bottom-0 right-0 z-[999999]" />
+                      </RadixToast.ToastProvider>
+                    </AssetsProvider>
+                  </ChainsProvider>
+                </SkipProvider>
+              </ChainProvider>
+            )}
+          </RecoilRoot>
         </QueryClientProvider>
       </main>
       <Analytics />
+    </>
+  );
+}
+
+const CCUI = dynamic(
+  () =>
+    import("@leapwallet/cosmos-social-login-capsule-provider-ui").then(
+      (m) => m.CustomCapsuleModalView,
+    ),
+  { ssr: false },
+);
+
+export function CustomCapsuleModalViewX() {
+  const [showCapsuleModal, setShowCapsuleModal] = useState(false);
+
+  window.openCapsuleModal = () => {
+    setShowCapsuleModal(true);
+  }
+
+  console.log('reached');
+
+  return (
+    <>
+      <CCUI
+        showCapsuleModal={showCapsuleModal}
+        setShowCapsuleModal={setShowCapsuleModal}
+        theme={'light'}
+        onAfterLoginSuccessful={() => {
+          window.successFromCapsuleModal();
+        }}
+        onLoginFailure = {
+          () => {
+            window.failureFromCapsuleModal();
+          }
+        }
+      />
     </>
   );
 }

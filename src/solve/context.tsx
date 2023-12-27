@@ -33,14 +33,14 @@ export const SkipProvider: FC<PropsWithChildren> = ({ children }) => {
     },
     endpointOptions: {
       getRpcEndpointForChain: async (chainID) => {
-        return `https://ibc.fun/nodes/${chainID}`;
+        return `https://ibc.fun/api/nodes/${chainID}`;
       },
       getRestEndpointForChain: async (chainID) => {
         if (chainID === "injective-1") {
           return "https://lcd.injective.network";
         }
 
-        return `https://ibc.fun/nodes/${chainID}`;
+        return `https://ibc.fun/api/nodes/${chainID}`;
       },
     },
   });
