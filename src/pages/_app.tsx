@@ -267,7 +267,7 @@ export default function App({ Component, pageProps }: AppProps) {
 const CCUI = dynamic(
   () =>
     import("@leapwallet/cosmos-social-login-capsule-provider-ui").then(
-      (m) => m.default,
+      (m) => m.CustomCapsuleModalView,
     ),
   { ssr: false },
 );

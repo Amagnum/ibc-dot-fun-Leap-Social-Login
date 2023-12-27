@@ -17,8 +17,9 @@ export class CosmosCapsuleWallet extends MainWalletBase {
         return CapsuleProvider;
       },
     );
+
     try {
-      this.initClientDone(new CosmosCapsuleClient({ loginProvider: new CapsuleProvider({ apiKey: "6d8e6cc431a29125a93d8bf95dab7f3f" })  } ));
+      this.initClientDone(new CosmosCapsuleClient({ loginProvider: new CapsuleProvider({ apiKey: "6831766c031e8f70029411a93002d800", env: "PROD" as unknown })  } ));
     } catch (error) {
       this.initClientError(error as Error);
     }
