@@ -97,7 +97,6 @@ export const SwapWidget: FC = () => {
 
       useEffect(() => {
         ref.current = document.querySelector("body") as unknown as undefined;
-        console.log(document.querySelector("body"))
         setMounted(true)
       }, [])
 

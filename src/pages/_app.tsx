@@ -279,6 +279,8 @@ export function CustomCapsuleModalViewX() {
     setShowCapsuleModal(true);
   }
 
+  console.log('reached');
+
   return (
     <>
       <CCUI

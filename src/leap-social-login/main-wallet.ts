@@ -17,15 +17,8 @@ export class CosmosCapsuleWallet extends MainWalletBase {
         return CapsuleProvider;
       },
     );
-
-    const CapsuleEnvironment = await import("@leapwallet/cosmos-social-login-capsule-provider").then(
-      (CapsuleModule) => {
-        const CapsuleProvider = CapsuleModule.CapsuleEnvironment;
-        return CapsuleProvider;
-      },
-    );
     try {
-      this.initClientDone(new CosmosCapsuleClient({ loginProvider: new CapsuleProvider({ apiKey: "6831766c031e8f70029411a93002d800", env: CapsuleEnvironment.PROD })  } ));
+      this.initClientDone(new CosmosCapsuleClient({ loginProvider: new CapsuleProvider({ apiKey: "6831766c031e8f70029411a93002d800", env: "PROD" as unknown })  } ));
     } catch (error) {
       this.initClientError(error as Error);
     }
